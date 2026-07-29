@@ -1,9 +1,9 @@
 # Accreditation Framework Registry
 
 <!-- verification-badge -->
-![verification: 3 UNVERIFIED](https://img.shields.io/badge/verification-3%20UNVERIFIED-critical)
+![verification: 4 UNVERIFIED](https://img.shields.io/badge/verification-4%20UNVERIFIED-critical)
 
-3 of 3 framework files have never been checked against an official manual: `nba/gapc-v3.0`, `nba/gapc-v4.0`, `nba/gapc-v4.0/wk-indicators`. They carry `verified_on: null` and a note saying what a verifier must confirm.
+4 of 4 framework files have never been checked against an official manual: `naac/binary-2025`, `nba/gapc-v3.0`, `nba/gapc-v4.0`, `nba/gapc-v4.0/wk-indicators`. They carry `verified_on: null` and a note saying what a verifier must confirm.
 <!-- /verification-badge -->
 
 Versioned, provenance-carrying definitions of accreditation frameworks — NBA, NAAC, ABET,

@@ -1,0 +1,139 @@
+{
+  "$schema": "../../../packages/schemas/framework-criteria.schema.json",
+  "id": "naac/binary-2025",
+  "body": "NAAC",
+  "version": "binary-2025",
+  "kind": "criteria",
+  "label": "NAAC — seven assessment criteria, binary accreditation",
+  "assessment_model": "binary",
+  "institution_scope": true,
+  "effective_from": "2025-02-01",
+  "effective_to": null,
+  "supersedes": null,
+  "superseded_by": null,
+  "retires": ["cgpa-raf"],
+  "source_document": "NAAC Assessment and Accreditation manuals (institution-type specific)",
+  "source_url": "https://www.naac.gov.in/",
+  "retrieved_on": "2026-07-29",
+  "verified_on": null,
+  "verification_note": "STRUCTURE ONLY — NOT A TRANSCRIPTION. This file carries the seven criterion titles and nothing more. Key indicators, their codes, their official wording and any weightages are deliberately ABSENT rather than approximated, because NAAC's manuals are institution-type specific (university, autonomous, affiliated college) and were substantially revised for binary accreditation. A verifier must: (1) obtain the manual for their own institution type from naac.gov.in and replace source_document and source_url with the exact document and link; (2) add key indicators as sub_criteria with their official codes and verbatim statements; (3) confirm that the seven titles below still match, and that no weightage applies under the binary model; (4) review every evidence_sources entry, which is this platform's editorial mapping and not NAAC's wording (see notes); (5) set verified_on. Until then nothing generated from this file may be presented as a NAAC submission.",
+  "notes": "Two things about this file are the platform's own judgement rather than NAAC's text, and are marked as such.\n\nFirst, `evidence_sources`. NAAC does not say 'PO attainment evidences criterion 2'. What it asks for is evidence that the institution runs an outcome-based system and acts on what it finds. The mapping below says which artefacts this platform can supply towards that, and — more usefully — says `external` where it can supply nothing. A criterion honestly marked unevidenced is worth more than one padded with a number that does not answer the question.\n\nSecond, NAAC is institutional and does not define outcomes of its own. A programme's COs and POs belong to whichever outcome framework accredits it (NBA GAPC, ABET, or the institution's own). That is why this is a criteria framework and not an outcome set: modelling NAAC as eleven NAAC outcomes would invent outcomes that do not exist, and would make one programme appear accredited twice on the same axis. An evidence pack built from this file therefore reads attainment computed under some other framework, and states which one.",
+  "criteria": [
+    {
+      "code": "1",
+      "title": "Curricular Aspects",
+      "sequence": 1,
+      "metric_type": "descriptive",
+      "evidence_sources": [
+        {
+          "kind": "curriculum",
+          "description": "Programmes, courses and the regulation each is taught under.",
+          "required": false
+        },
+        {
+          "kind": "articulation_matrix",
+          "description": "That course outcomes exist and are mapped to programme outcomes, with a written justification per mapping.",
+          "required": false
+        }
+      ]
+    },
+    {
+      "code": "2",
+      "title": "Teaching-Learning and Evaluation",
+      "sequence": 2,
+      "metric_type": "quantitative",
+      "evidence_sources": [
+        {
+          "kind": "co_attainment",
+          "description": "Course outcome attainment, with the method and cohort stated.",
+          "required": true
+        },
+        {
+          "kind": "po_attainment",
+          "description": "Programme outcome attainment derived from course outcomes.",
+          "required": true
+        },
+        {
+          "kind": "program_attainment",
+          "description": "Programme-level rollup across courses and terms.",
+          "required": true
+        },
+        {
+          "kind": "survey",
+          "description": "Indirect attainment from course-exit and graduate surveys, where collected.",
+          "required": false
+        }
+      ]
+    },
+    {
+      "code": "3",
+      "title": "Research, Innovations and Extension",
+      "sequence": 3,
+      "metric_type": "quantitative",
+      "evidence_sources": [
+        {
+          "kind": "external",
+          "description": "Publications, funded projects, consultancy, patents and extension activity. None of it is held by this platform, which records assessment rather than research output.",
+          "required": true
+        }
+      ]
+    },
+    {
+      "code": "4",
+      "title": "Infrastructure and Learning Resources",
+      "sequence": 4,
+      "metric_type": "quantitative",
+      "evidence_sources": [
+        {
+          "kind": "external",
+          "description": "Physical and digital infrastructure, library and laboratory provision. Not held here.",
+          "required": true
+        }
+      ]
+    },
+    {
+      "code": "5",
+      "title": "Student Support and Progression",
+      "sequence": 5,
+      "metric_type": "quantitative",
+      "evidence_sources": [
+        {
+          "kind": "external",
+          "description": "Scholarships, placement, progression to higher study, student grievance redressal. Not held here. Cohort counts on an attainment report describe who was assessed, not where they went, and must not be presented as progression data.",
+          "required": true
+        }
+      ]
+    },
+    {
+      "code": "6",
+      "title": "Governance, Leadership and Management",
+      "sequence": 6,
+      "metric_type": "descriptive",
+      "evidence_sources": [
+        {
+          "kind": "action_plan",
+          "description": "The continuous quality improvement register: outcomes below target, the cause recorded, the action taken, who owned it, and the evidence it was carried out. This is the part of IQAC's work this platform holds.",
+          "required": false
+        },
+        {
+          "kind": "external",
+          "description": "Governance structure, strategic plan, financial management, staff appraisal and welfare.",
+          "required": true
+        }
+      ]
+    },
+    {
+      "code": "7",
+      "title": "Institutional Values and Best Practices",
+      "sequence": 7,
+      "metric_type": "qualitative",
+      "evidence_sources": [
+        {
+          "kind": "external",
+          "description": "Institutional distinctiveness, inclusion, environmental practice and best practices. A written submission; nothing here can be auto-filled.",
+          "required": true
+        }
+      ]
+    }
+  ]
+}

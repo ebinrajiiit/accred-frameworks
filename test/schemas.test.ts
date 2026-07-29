@@ -380,12 +380,56 @@ describe('the NBA framework files (OSS-SPLIT step 3)', () => {
     }
   });
 
-  it('does not claim NAAC, NIRF or ABET are shipped', () => {
-    // Step 3 deliberately seeds NBA only. Listing the rest as planned, with the reason they
-    // are blocked, is more useful than an empty directory or a fabricated file.
-    const shipped = index.entries.map((e: { id: string }) => e.id);
-    expect(shipped.some((id: string) => id.startsWith('naac/'))).toBe(false);
+  it('does not claim NIRF or ABET are shipped', () => {
+    // Listing what is not here, with the reason it is blocked, is more useful than an empty
+    // directory or a fabricated file.
     const planned = index.planned.map((p: { id: string }) => p.id);
-    expect(planned).toEqual(expect.arrayContaining(['naac/binary-2025', 'nirf/2026', 'abet/eac']));
+    expect(planned).toEqual(expect.arrayContaining(['nirf/2026', 'abet/eac', 'naac/mbgl']));
+    const shipped = index.entries.map((e: { id: string }) => e.id);
+    for (const id of planned) expect(shipped).not.toContain(id);
+  });
+
+  it('ships NAAC as criteria carrying titles only, with nothing invented', () => {
+    // The seven criterion titles are stable and long-published. Key indicators, their codes
+    // and any weightages are not: NAAC's manuals are institution-type specific and were
+    // revised for binary accreditation. Approximating them would produce a file that looks
+    // authoritative and is not, which is worse than shipping the structure alone.
+    const naac = index.entries.find((e: { id: string }) => e.id === 'naac/binary-2025');
+    expect(naac).toBeDefined();
+
+    const doc = fw(naac.path);
+    expect(doc.kind).toBe('criteria');
+    expect(doc.assessment_model).toBe('binary');
+    expect(doc.institution_scope).toBe(true);
+    expect(doc.criteria).toHaveLength(7);
+    expect(doc.verified_on).toBeNull();
+
+    for (const c of doc.criteria) {
+      expect(c.title, 'every criterion is titled').toBeTruthy();
+      expect(c.statement, 'no criterion carries invented official wording').toBeUndefined();
+      expect(c.weight, 'binary accreditation assigns no weightage').toBeUndefined();
+      expect(c.sub_criteria, 'no key indicators are invented').toBeUndefined();
+    }
+  });
+
+  it('says plainly which NAAC criteria attainment data cannot evidence', () => {
+    // A criterion honestly marked unevidenced is worth more than one padded with a number
+    // that does not answer the question.
+    const doc = fw('naac/binary-2025/criteria.json');
+    const external = doc.criteria.filter((c: { evidence_sources?: { kind: string }[] }) =>
+      (c.evidence_sources ?? []).some((s) => s.kind === 'external'),
+    );
+    expect(external.length).toBeGreaterThan(0);
+    for (const c of external) {
+      const ext = c.evidence_sources.find((s: { kind: string }) => s.kind === 'external');
+      expect(ext.description, `criterion ${c.code} says what is missing`).toBeTruthy();
+    }
+  });
+
+  it('retires the grading model NAAC withdrew', () => {
+    // Emitting a CGPA/RAF grade would produce a submission in a format the body no longer
+    // accepts, which fails at the portal rather than in review.
+    const doc = fw('naac/binary-2025/criteria.json');
+    expect(doc.retires).toContain('cgpa-raf');
   });
 });

@@ -1,4 +1,4 @@
-# @facts-h/accred-schemas
+# @factsh/accred-schemas
 
 JSON Schemas for accreditation frameworks, attainment policies, and the attainment engine's
 input and output contracts.
@@ -11,17 +11,17 @@ input and output contracts.
 
 | Import | What it describes |
 | --- | --- |
-| `@facts-h/accred-schemas/framework-outcomes` | A framework defining outcomes a *graduate* attains — NBA GAPC, ABET EAC. |
-| `@facts-h/accred-schemas/framework-criteria` | A framework defining criteria an *institution* evidences — NAAC, NIRF. |
-| `@facts-h/accred-schemas/framework-knowledge-indicators` | Washington Accord knowledge indicators (WK1–WK9). |
-| `@facts-h/accred-schemas/attainment-policy` | The rulebook: targets, bands, weights, cohort handling, end-semester mode. |
-| `@facts-h/accred-schemas/engine-input` | What the engine consumes. |
-| `@facts-h/accred-schemas/engine-output` | What it returns, including the trace on every value. |
+| `@factsh/accred-schemas/framework-outcomes` | A framework defining outcomes a *graduate* attains — NBA GAPC, ABET EAC. |
+| `@factsh/accred-schemas/framework-criteria` | A framework defining criteria an *institution* evidences — NAAC, NIRF. |
+| `@factsh/accred-schemas/framework-knowledge-indicators` | Washington Accord knowledge indicators (WK1–WK9). |
+| `@factsh/accred-schemas/attainment-policy` | The rulebook: targets, bands, weights, cohort handling, end-semester mode. |
+| `@factsh/accred-schemas/engine-input` | What the engine consumes. |
+| `@factsh/accred-schemas/engine-output` | What it returns, including the trace on every value. |
 
 ```ts
 import Ajv from 'ajv';
 import addFormats from 'ajv-formats';
-import outcomes from '@facts-h/accred-schemas/framework-outcomes' with { type: 'json' };
+import outcomes from '@factsh/accred-schemas/framework-outcomes' with { type: 'json' };
 
 const validate = addFormats(new Ajv({ strict: false })).compile(outcomes);
 ```

@@ -1,5 +1,5 @@
 {
-  "name": "@facts-h/accred-schemas",
+  "name": "@factsh/accred-schemas",
   "version": "1.0.0",
   "description": "JSON Schemas for accreditation frameworks, attainment policies, and the engine's input and output contracts.",
   "license": "Apache-2.0",

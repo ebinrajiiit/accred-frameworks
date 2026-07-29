@@ -1,4 +1,4 @@
-# @facts-h/attainment-engine
+# @factsh/attainment-engine
 
 Computes CO/PO/PSO attainment for outcome-based accreditation. A policy document and a set of
 marks go in; a traceable result document comes out.
@@ -13,7 +13,7 @@ marks go in; a traceable result document comes out.
 ## What it is
 
 ```ts
-import { computeAttainment } from '@facts-h/attainment-engine';
+import { computeAttainment } from '@factsh/attainment-engine';
 
 const result = computeAttainment(input, policy, {
   computedAt: '2026-07-29T00:00:00.000Z', // passed in, never read from the clock

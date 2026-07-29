@@ -1,5 +1,5 @@
 {
-  "name": "@facts-h/attainment-engine",
+  "name": "@factsh/attainment-engine",
   "version": "0.1.0",
   "description": "Pure attainment engine \u2014 policy document in, traceable result document out. No I/O, no database, no institution specifics.",
   "license": "Apache-2.0",

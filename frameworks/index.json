@@ -2,7 +2,7 @@
   "registry": "Accreditation Framework Registry",
   "maintainer": "FACTS-H Lab, IIIT Kottayam",
   "data_version": "2026.07.0",
-  "schema_package": "@facts-h/accred-schemas@1.0.0",
+  "schema_package": "@factsh/accred-schemas@1.0.0",
   "_note": "Every entry points at a file that validates against the schema its `kind` selects. `verified_on: null` means the transcription has not yet been checked against the official manual by a human — see DISCLAIMER.md. Nothing here is authoritative; the accrediting body's own manual is.",
   "entries": [
     {

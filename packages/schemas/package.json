@@ -21,5 +21,8 @@
   "homepage": "https://github.com/ebinrajiiit/accred-frameworks#readme",
   "bugs": {
     "url": "https://github.com/ebinrajiiit/accred-frameworks/issues"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

@@ -1,7 +1,7 @@
 {
   "name": "@facts-h/attainment-engine",
   "version": "0.1.0",
-  "description": "Pure attainment engine — policy document in, traceable result document out. No I/O, no database, no institution specifics.",
+  "description": "Pure attainment engine \u2014 policy document in, traceable result document out. No I/O, no database, no institution specifics.",
   "license": "Apache-2.0",
   "type": "module",
   "main": "./dist/index.js",
@@ -42,5 +42,8 @@
   "homepage": "https://github.com/ebinrajiiit/accred-frameworks#readme",
   "bugs": {
     "url": "https://github.com/ebinrajiiit/accred-frameworks/issues"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

@@ -18,6 +18,7 @@ import {
 import { selectCohort, toCohortTrace } from './cohort.js';
 import { computeIndirect } from './indirect.js';
 import { clampToScale, computeLevel } from './level.js';
+import { componentWeight } from './co.js';
 import { assertFrameworkMatch, computeCoursePo, frameworkLabel } from './po.js';
 import { resolveSee } from './see.js';
 import { computeInputHash } from './hash.js';
@@ -25,6 +26,7 @@ import { ENGINE_VERSION } from './version.js';
 import { WarningLog } from './warnings.js';
 import type {
   CoAttainment,
+  ComponentLevel,
   CoTrace,
   ContributingAssessment,
   EngineContext,
@@ -193,6 +195,8 @@ function computeCourseOutcome(args: CoArgs): CoAttainment {
   const pcts: number[] = [];
   const ciePcts: number[] = [];
   const seePcts: number[] = [];
+  /** Per-component percentages, for `combination: component_levels`. */
+  const componentPcts = new Map<string, number[]>();
   const exclusions: Record<string, number> = {};
   const contributing = new Map<string, ContributingAssessment>();
 
@@ -268,6 +272,13 @@ function computeCourseOutcome(args: CoArgs): CoAttainment {
       pcts.push(r.pct);
       if (r.pct_cie !== undefined) ciePcts.push(r.pct_cie);
       if (r.pct_see !== undefined) seePcts.push(r.pct_see);
+
+      for (const cm of r.components) {
+        if (cm.pct === undefined) continue;
+        const list = componentPcts.get(cm.component.key) ?? [];
+        list.push(cm.pct);
+        componentPcts.set(cm.component.key, list);
+      }
     }
 
     students.push(trace);
@@ -289,7 +300,40 @@ function computeCourseOutcome(args: CoArgs): CoAttainment {
   let directCie: number | undefined;
   let directSee: number | undefined;
 
-  if (split) {
+  /** Level each component reached on its own — reported whatever the combination. */
+  const componentLevels: ComponentLevel[] = components
+    .map((c) => {
+      const list = componentPcts.get(c.key) ?? [];
+      const level = computeLevel(list, policy.direct, policy.scale);
+      return {
+        component_key: c.key,
+        name: c.name,
+        kind: c.kind,
+        weight: componentWeight(c, co.id),
+        students: list.length,
+        ...(level ? { level: level.value } : {}),
+      };
+    })
+    .filter((c) => c.students > 0 || c.weight > 0);
+
+  if (policy.direct.combination === 'component_levels') {
+    // Band each instrument, then weight-average the levels — the inverse order of
+    // `weighted_components`, and a different number. Weights are per-outcome where the
+    // policy gives them, so a CO assessed 30/30/40 and one assessed 50/0/50 in the same
+    // course each get their own mix.
+    const parts = componentLevels.filter((c) => c.level !== undefined && c.weight > 0);
+    const den = parts.reduce((a, b) => a + b.weight, 0);
+    if (den > 0) direct = parts.reduce((a, b) => a + b.weight * b.level!, 0) / den;
+
+    if (parts.length === 0 && pcts.length > 0) {
+      warnings.push(
+        'NO_WEIGHTED_COMPONENT',
+        `${co.code} has marks but every instrument carries zero weight for it, so no direct ` +
+          `attainment could be combined. Check the per-outcome weightage.`,
+        { course_outcome_id: co.id },
+      );
+    }
+  } else if (split) {
     directCie = cieOnly?.value;
     directSee = see.proxy
       ? see.proxy.level
@@ -392,6 +436,7 @@ function computeCourseOutcome(args: CoArgs): CoAttainment {
   if (overall?.crossed !== undefined) out.students_crossed = overall.crossed;
   if (directCie !== undefined) out.direct_cie = directCie;
   if (directSee !== undefined) out.direct_see = directSee;
+  if (componentLevels.length > 0) out.component_levels = componentLevels;
   if (args.wkCodes && args.wkCodes.length > 0) out.wk_codes = args.wkCodes;
 
   applyOverride(out, input, policy, warnings);

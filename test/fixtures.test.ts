@@ -113,6 +113,47 @@ describe('golden fixtures', () => {
         }
       });
 
+      if (expected.component_levels) {
+        it('bands each instrument on its own, with the weight that outcome gives it', () => {
+          // The step `component_levels` exists for. If these levels are right but the direct
+          // figure is wrong, the averaging is at fault; if a level is wrong, the banding is.
+          // Asserting both separates the two.
+          for (const [code, byComponent] of Object.entries(
+            expected.component_levels as Record<string, Record<string, { level: number; weight: number }>>,
+          )) {
+            const co = result.co_attainments.find((c) => c.code === code);
+            expect(co?.component_levels, `${code} has per-instrument levels`).toBeDefined();
+
+            for (const [key, want] of Object.entries(byComponent)) {
+              const got = co!.component_levels!.find((c) => c.component_key === key);
+              expect(got, `${code} component ${key}`).toBeDefined();
+              expect(got!.level, `${code} ${key} level`).toBeCloseTo(want.level, 6);
+              expect(got!.weight, `${code} ${key} weight`).toBeCloseTo(want.weight, 6);
+            }
+          }
+        });
+
+        it('leaves an outcome untouched by an instrument weighted zero for it', () => {
+          // The discriminating case: an instrument every student aced, weighted 0 here.
+          // Ignoring per-outcome weights would pull the figure up and nothing would error.
+          for (const [code, byComponent] of Object.entries(
+            expected.component_levels as Record<string, Record<string, { level: number; weight: number }>>,
+          )) {
+            const zeroed = Object.entries(byComponent).filter(([, w]) => w.weight === 0);
+            if (zeroed.length === 0) continue;
+
+            const co = result.co_attainments.find((c) => c.code === code)!;
+            const weighted = Object.entries(byComponent).filter(([, w]) => w.weight > 0);
+            const den = weighted.reduce((a, [, w]) => a + w.weight, 0);
+            const num = weighted.reduce((a, [, w]) => a + w.weight * w.level, 0);
+            expect(co.direct_value, `${code} excludes zero-weighted instruments`).toBeCloseTo(
+              num / den,
+              6,
+            );
+          }
+        });
+      }
+
       if (expected.student_pct || expected.student_maximum) {
         it('reproduces the per-student figures behind them', () => {
           for (const [code, byRoll] of Object.entries(expected.student_pct ?? {})) {

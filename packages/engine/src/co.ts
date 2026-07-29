@@ -53,8 +53,21 @@ export interface Component {
   name: string;
   kind: ComponentKind;
   weight: number;
+  /** Per-outcome overrides of `weight`, keyed by course outcome id. */
+  weightsByOutcome?: Map<string, number>;
   members: AssessmentInput[];
   selection: { rule: 'all' | 'best_n'; n: number };
+}
+
+/**
+ * What this component is worth for one outcome.
+ *
+ * The scalar weight is the fallback, so a policy written before per-outcome weights existed
+ * keeps meaning exactly what it meant.
+ */
+export function componentWeight(component: Component, coId: string): number {
+  const override = component.weightsByOutcome?.get(coId);
+  return override ?? component.weight;
 }
 
 export interface ComponentMeasure {
@@ -320,6 +333,9 @@ export function resolveComponents(
       name: a.name,
       kind: classifyAssessment(a.kind),
       weight: a.weight_pct,
+      ...(a.outcome_weights?.length
+        ? { weightsByOutcome: new Map(a.outcome_weights.map((w) => [w.course_outcome_id, w.weight_pct])) }
+        : {}),
       members: [a],
       selection: { rule: 'all', n: 1 },
     });
@@ -356,6 +372,13 @@ export function resolveComponents(
       name: group.name,
       kind: classifyAssessment(members[0]!.kind),
       weight: group.weight_pct,
+      ...(group.outcome_weights?.length
+        ? {
+            weightsByOutcome: new Map(
+              group.outcome_weights.map((w) => [w.course_outcome_id, w.weight_pct]),
+            ),
+          }
+        : {}),
       members,
       selection: { rule, n: Math.min(n, members.length) },
     });
@@ -441,8 +464,11 @@ export function computeStudentCo(
     let den = 0;
     for (const c of subset) {
       if (c.pct === undefined) continue;
-      num += c.component.weight * c.pct;
-      den += c.component.weight;
+      // Per-outcome weight where the policy gives one, the component's scalar otherwise.
+      // A component weighted 0 for this CO drops out rather than dragging the average.
+      const w = componentWeight(c.component, coId);
+      num += w * c.pct;
+      den += w;
     }
     return den > 0 ? num / den : undefined;
   };

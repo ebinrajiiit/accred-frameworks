@@ -74,6 +74,14 @@ function build(spec) {
       id: a.id, name: a.name ?? a.id, kind: a.kind ?? 'cie',
       max_marks: a.max ?? qs.reduce((s, q) => s + q.max, 0),
       weight_pct: a.weight, ...(a.group ? { group_id: a.group } : {}),
+      ...(a.coWeights
+        ? {
+            outcome_weights: Object.entries(a.coWeights).map(([c, w]) => ({
+              course_outcome_id: coId(c),
+              weight_pct: w,
+            })),
+          }
+        : {}),
     });
   }
 
@@ -433,6 +441,72 @@ fixtures.push({
 
 mkdirSync(out, { recursive: true });
 const manifest = [];
+
+// ---- G ---------------------------------------------------------------------
+// Per-outcome instrument weightage, with each instrument banded before the levels
+// are averaged. Both halves of the KTU-style method in one fixture.
+//
+// Three instruments, two outcomes, and the weightage differs BY OUTCOME:
+//
+//              Internal test   Assignment   End-semester
+//   CO1              50            0             50
+//   CO2              30           30             40
+//
+// Bands: ratio >= .5 -> 1, >= .6 -> 2, >= .75 -> 3.  Target 60%.
+//
+// Each instrument is banded on its own cohort ratio first:
+//
+//   CO1  test  pcts .8 .7 .5 .4  -> 2/4 = .50 -> level 1   (weight 50)
+//   CO1  asgn  pcts 1. 1. 1. 1.  -> 4/4 = 1.0 -> level 3   (weight  0)
+//   CO1  ESE   pcts .9 .8 .7 .6  -> 4/4 = 1.0 -> level 3   (weight 50)
+//   CO1 direct = (50*1 + 50*3) / 100 = 2.0
+//
+//   CO2  test  pcts .6 .6 .3 .3  -> 2/4 = .50 -> level 1   (weight 30)
+//   CO2  asgn  pcts .9 .8 .7 .2  -> 3/4 = .75 -> level 3   (weight 30)
+//   CO2  ESE   pcts .7 .6 .6 .5  -> 3/4 = .75 -> level 3   (weight 40)
+//   CO2 direct = (30*1 + 30*3 + 40*3) / 100 = 2.4
+//
+// The assignment is the case that discriminates. Every student scores full marks on its
+// CO1 question, so it bands to 3 — and it must not move CO1, because the policy weights it
+// zero there. Ignore the per-outcome weights and CO1 comes out 2.33; apply the assessment's
+// scalar weight instead and it comes out differently again. Only 2.0 is right.
+fixtures.push({
+  dir: 'g-per-outcome-weightage',
+  title: 'G — instrument weightage differs per outcome, levels averaged after banding',
+  description:
+    'The same three instruments count differently towards different outcomes — CO1 is 50/0/50 while CO2 is 30/30/40 — and each instrument is banded on its own before the levels are weight-averaged. An assignment weighted zero for CO1 scores full marks there and must leave CO1 untouched; that is the case that separates this from a single per-assessment weight.',
+  policy: 'component-levels',
+  spec: {
+    framework: NBA_V4, cos: ['CO1', 'CO2'], outcomes: ['PO1', 'PO2'], credits: 3,
+    articulation: { PO1: { CO1: 3, CO2: 2 }, PO2: { CO2: 3 } },
+    assessments: [
+      { id: 'T', name: 'Internal test', weight: 40, coWeights: { CO1: 50, CO2: 30 },
+        questions: [{ label: 'T-CO1', max: 10, co: 'CO1' }, { label: 'T-CO2', max: 10, co: 'CO2' }] },
+      { id: 'A', name: 'Assignment', weight: 10, coWeights: { CO1: 0, CO2: 30 },
+        questions: [{ label: 'A-CO1', max: 10, co: 'CO1' }, { label: 'A-CO2', max: 10, co: 'CO2' }] },
+      { id: 'E', name: 'End-semester examination', kind: 'see', weight: 50, coWeights: { CO1: 50, CO2: 40 },
+        questions: [{ label: 'E-CO1', max: 10, co: 'CO1' }, { label: 'E-CO2', max: 10, co: 'CO2' }] },
+    ],
+    students: [
+      { roll: 'S1', marks: { 'T:T-CO1': 8, 'T:T-CO2': 6, 'A:A-CO1': 10, 'A:A-CO2': 9, 'E:E-CO1': 9, 'E:E-CO2': 7 } },
+      { roll: 'S2', marks: { 'T:T-CO1': 7, 'T:T-CO2': 6, 'A:A-CO1': 10, 'A:A-CO2': 8, 'E:E-CO1': 8, 'E:E-CO2': 6 } },
+      { roll: 'S3', marks: { 'T:T-CO1': 5, 'T:T-CO2': 3, 'A:A-CO1': 10, 'A:A-CO2': 7, 'E:E-CO1': 7, 'E:E-CO2': 6 } },
+      { roll: 'S4', marks: { 'T:T-CO1': 4, 'T:T-CO2': 3, 'A:A-CO1': 10, 'A:A-CO2': 2, 'E:E-CO1': 6, 'E:E-CO2': 5 } },
+    ],
+  },
+  expected: {
+    combination: 'component_levels',
+    cohort: { considered: 4, excluded: 0 },
+    co: {
+      CO1: { students_considered: 4, direct: 2.0 },
+      CO2: { students_considered: 4, direct: 2.4 },
+    },
+    component_levels: {
+      CO1: { T: { level: 1, weight: 50 }, A: { level: 3, weight: 0 }, E: { level: 3, weight: 50 } },
+      CO2: { T: { level: 1, weight: 30 }, A: { level: 3, weight: 30 }, E: { level: 3, weight: 40 } },
+    },
+  },
+});
 
 for (const f of fixtures) {
   const dir = join(out, f.dir);

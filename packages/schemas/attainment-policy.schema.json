@@ -170,8 +170,10 @@
         "combination": {
           "enum": [
             "weighted_components",
-            "split"
-          ]
+            "split",
+            "component_levels"
+          ],
+          "description": "How component results become one direct figure.\n\nweighted_components — average percentages across instruments, then band once.\nsplit — band internal and end-semester separately, then blend the two levels.\ncomponent_levels — band each instrument separately, then weight-average the levels.\n\nThe third is not a variant of the first. Banding before weighting and weighting before banding give different numbers, and both are in live use: a cohort at 100% on one instrument and 40% on another, equally weighted, is 70% banded once, or the average of two separate bands. Which an institution means is a policy question, not a rounding detail."
         },
         "cie_weight": {
           "type": "number",

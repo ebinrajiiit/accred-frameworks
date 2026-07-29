@@ -1,0 +1,49 @@
+{
+  "title": "G — instrument weightage differs per outcome, levels averaged after banding",
+  "description": "The same three instruments count differently towards different outcomes — CO1 is 50/0/50 while CO2 is 30/30/40 — and each instrument is banded on its own before the levels are weight-averaged. An assignment weighted zero for CO1 scores full marks there and must leave CO1 untouched; that is the case that separates this from a single per-assessment weight.",
+  "combination": "component_levels",
+  "cohort": {
+    "considered": 4,
+    "excluded": 0
+  },
+  "co": {
+    "CO1": {
+      "students_considered": 4,
+      "direct": 2
+    },
+    "CO2": {
+      "students_considered": 4,
+      "direct": 2.4
+    }
+  },
+  "component_levels": {
+    "CO1": {
+      "T": {
+        "level": 1,
+        "weight": 50
+      },
+      "A": {
+        "level": 3,
+        "weight": 0
+      },
+      "E": {
+        "level": 3,
+        "weight": 50
+      }
+    },
+    "CO2": {
+      "T": {
+        "level": 1,
+        "weight": 30
+      },
+      "A": {
+        "level": 3,
+        "weight": 30
+      },
+      "E": {
+        "level": 3,
+        "weight": 40
+      }
+    }
+  }
+}

@@ -60,6 +60,12 @@ export function validatePolicy(policy: PolicyDocument): string[] {
         `direct.cie_weight + direct.see_weight must be 1 under "split" combination, got ${d.cie_weight + d.see_weight}.`,
       );
     }
+    if (d.combination === 'component_levels' && (!Array.isArray(d.bands) || d.bands.length === 0)) {
+      issues.push(
+        'direct.combination "component_levels" bands each instrument separately, so direct.bands ' +
+          'must be defined — there is nothing to band with.',
+      );
+    }
     if (d.see_mode === 'threshold_proxy' && d.see_threshold_proxy_pct === undefined) {
       issues.push('direct.see_threshold_proxy_pct is required when see_mode is "threshold_proxy".');
     }

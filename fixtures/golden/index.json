@@ -35,6 +35,11 @@
       "dir": "f2-migration-v4-term",
       "title": "F2 — a term taught after the cutover, computed under the current 11-outcome framework",
       "policy": "level-target-ratio"
+    },
+    {
+      "dir": "g-per-outcome-weightage",
+      "title": "G — instrument weightage differs per outcome, levels averaged after banding",
+      "policy": "component-levels"
     }
   ]
 }

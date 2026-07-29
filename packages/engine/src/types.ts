@@ -127,7 +127,19 @@ export interface PolicyDirect {
    * `split` — CIE and SEE are banded independently and combined as
    *   `cie_weight·level_cie + see_weight·level_see` (§6.3).
    */
-  combination: 'weighted_components' | 'split';
+  /**
+   * How component results become one direct figure.
+   *
+   * `weighted_components` — average the percentages across instruments, then band once.
+   * `split` — band internal and end-semester separately, then blend the two levels.
+   * `component_levels` — band *each* instrument separately, then weight-average the levels.
+   *
+   * The third is not a variant of the first: banding before weighting and weighting before
+   * banding give different numbers, and both are in live use. A cohort scoring 100% on one
+   * instrument and 40% on another, equally weighted, is 70% banded once — or the average of
+   * two separate bands. Which one an institution means is a policy question, not a detail.
+   */
+  combination: 'weighted_components' | 'split' | 'component_levels';
   cie_weight: number;
   see_weight: number;
   see_mode: SeeMode;
@@ -315,6 +327,25 @@ export interface AssessmentGroupInput {
   n?: number;
   /** The group's share of the course, replacing its members' individual weights. */
   weight_pct: number;
+  /** Per-outcome overrides of `weight_pct`. See `AssessmentInput.outcome_weights`. */
+  outcome_weights?: OutcomeWeightInput[];
+}
+
+/**
+ * What one instrument is worth *for one course outcome*.
+ *
+ * Institutions weight instruments differently per CO, and the difference is not cosmetic. A
+ * CO taught through coursework might be 30% internal test, 30% assignment, 40% end-semester,
+ * while a CO assessed only by examination is 50/0/50 in the same course. Collapsing that to a
+ * single per-assessment weight silently reweights every outcome to whatever the course
+ * average happens to be.
+ *
+ * Omitted entirely, an assessment falls back to its scalar `weight_pct` for every CO, which
+ * is what every policy written before this existed means.
+ */
+export interface OutcomeWeightInput {
+  course_outcome_id: string;
+  weight_pct: number;
 }
 
 export interface AssessmentInput {
@@ -326,7 +357,13 @@ export interface AssessmentInput {
   weight_pct: number;
   group_id?: string | null;
   /** Where the marks came from — drives the grade-derived stamp. */
-  data_source?: 'question_wise' | 'totals' | 'grades';
+  data_source?: 'question_wise' | 'totals' | 'grades' | 'co_wise';
+  /**
+   * Per-outcome overrides of `weight_pct`. A CO listed here uses the given weight; a CO
+   * absent from the list falls back to `weight_pct`. Weights need not sum to 100 — they are
+   * normalised per CO, so 50/50 and 30/30/40 both mean what they look like.
+   */
+  outcome_weights?: OutcomeWeightInput[];
 }
 
 export interface ChoiceGroupInput {
@@ -518,6 +555,25 @@ export interface PoTrace {
 // Engine output
 // ---------------------------------------------------------------------------
 
+/**
+ * What one instrument reached for one outcome, before the instruments were combined.
+ *
+ * Reported whatever the combination, because it is the line an evaluator asks about: "your
+ * end-semester result for CO3 is 2, your assignment is 3 — how did you get 2.4?" Under
+ * `component_levels` these are the numbers actually averaged; under the others they are
+ * diagnostic, and they cost nothing to compute.
+ */
+export interface ComponentLevel {
+  component_key: string;
+  name: string;
+  kind: 'cie' | 'see';
+  /** The weight used for *this* outcome, which may differ from the component's scalar. */
+  weight: number;
+  students: number;
+  /** Undefined when nothing was measurable for this outcome in this instrument. */
+  level?: number;
+}
+
 export interface CoAttainment {
   course_outcome_id: string;
   code: string;
@@ -534,6 +590,8 @@ export interface CoAttainment {
   /** Present only under `combination: split`. */
   direct_cie?: number;
   direct_see?: number;
+  /** Per-instrument levels and the per-outcome weight each carried. */
+  component_levels?: ComponentLevel[];
   overridden?: { value: number; original?: number; reason: string; author_id: string };
   trace: CoTrace;
   warnings: EngineWarning[];

@@ -433,3 +433,43 @@ describe('the NBA framework files (OSS-SPLIT step 3)', () => {
     expect(doc.retires).toContain('cgpa-raf');
   });
 });
+
+describe('published README', () => {
+  /**
+   * The npm page is the README, and its first code block is the first thing anyone runs.
+   *
+   * `@factsh/attainment-engine@0.1.0` shipped with an example calling `computeAttainment`,
+   * which the engine does not export — written from memory rather than from the export list,
+   * and caught only by installing the published package and importing it. A README that
+   * fails on line one is worse than no README: it reads as though the package is broken.
+   */
+  const readme = readFileSync(new URL('../packages/engine/README.md', import.meta.url), 'utf8');
+
+  it('only names symbols the engine actually exports', async () => {
+    const engine = await import('../packages/engine/src/index.js');
+    const exported = new Set(Object.keys(engine));
+
+    // Every identifier the README imports, from every import statement in it.
+    const imported = [...readme.matchAll(/import\s*\{([^}]+)\}\s*from\s*'@factsh\/attainment-engine'/g)]
+      .flatMap((m) => m[1]!.split(',').map((s) => s.trim()).filter(Boolean));
+
+    expect(imported.length, 'the README shows at least one import').toBeGreaterThan(0);
+    for (const name of imported) {
+      expect(exported, `README imports ${name}`).toContain(name);
+    }
+  });
+
+  it('names symbols in prose that exist too', async () => {
+    const engine = await import('../packages/engine/src/index.js');
+    const exported = new Set(Object.keys(engine));
+
+    // Backticked identifiers that look like exports — camelCase functions or Error classes.
+    const claimed = [...readme.matchAll(/`([a-z][A-Za-z]+|[A-Z][A-Za-z]*Error)`/g)]
+      .map((m) => m[1]!)
+      .filter((n) => /^compute|^validate|Error$/.test(n));
+
+    for (const name of new Set(claimed)) {
+      expect(exported, `README mentions ${name}`).toContain(name);
+    }
+  });
+});

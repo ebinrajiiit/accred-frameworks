@@ -13,17 +13,24 @@ marks go in; a traceable result document comes out.
 ## What it is
 
 ```ts
-import { computeAttainment } from '@factsh/attainment-engine';
+import { computeOffering, computeProgram } from '@factsh/attainment-engine';
 
-const result = computeAttainment(input, policy, {
-  computedAt: '2026-07-29T00:00:00.000Z', // passed in, never read from the clock
-  runId: 'run-1',
+// One course offering: marks in, CO and PO attainment out.
+const result = computeOffering(input, policy, {
+  computed_at: '2026-07-29T00:00:00.000Z', // passed in, never read from the clock
+  computed_by: 'user-1',                   // optional
 });
+
+// A whole programme, from the offering results that fed it.
+const rollup = computeProgram(programInput, policy, { computed_at: '2026-07-29T00:00:00.000Z' });
 ```
 
 `result` carries every CO and PO value, the method that produced it, the cohort it was
 computed over, warnings, and a `trace` on each number resolving back to the marks rows it came
 from.
+
+Also exported: `validatePolicy` (checks a policy document before you compute with it),
+`computeInputHash` (the hash that makes a run reproducible), and `FrameworkMismatchError`.
 
 ## The properties it holds
 

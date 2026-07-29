@@ -380,6 +380,15 @@ export interface QuestionInput {
   parent_id?: string | null;
   label: string;
   max_marks: number;
+  /**
+   * False for a component that carries marks but measures no outcome — attendance being the
+   * usual one, worth ten of fifty internal marks in many schemes.
+   *
+   * Such a component is already excluded from attainment simply by having no CO mapping.
+   * Declaring it says the omission is deliberate, which is the difference between a
+   * blueprint that is finished and one that looks finished. Defaults to true.
+   */
+  counts_towards_outcomes?: boolean;
   bloom_level?: BloomLevel;
   choice_group?: string | null;
   is_optional?: boolean;

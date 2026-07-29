@@ -135,6 +135,26 @@ export function computeOffering(
   if (policy.reporting.stamp_fallbacks_used) {
     if (see.stamp) stamps.push(see.stamp);
     if (warnings.all().some((w) => w.code === 'GRADE_DERIVED')) stamps.push('Grade-derived components');
+
+    // §2's argument is that question-wise capture is what makes a number defensible. Where
+    // an institution records marks per outcome instead, the figure still resolves — to a
+    // column on a mark sheet rather than to a question a student answered. Saying so is the
+    // difference between weaker evidence and a weaker claim honestly made.
+    const coWise = input.assessments.filter((a) => a.data_source === 'co_wise');
+    if (coWise.length > 0) {
+      stamps.push(
+        `Outcome-wise capture in ${coWise.length} assessment${coWise.length === 1 ? '' : 's'} ` +
+          `(${coWise.map((a) => a.name).join(', ')}) — marks recorded per outcome, not per question`,
+      );
+    }
+
+    const excluded = input.questions.filter((q) => q.counts_towards_outcomes === false);
+    if (excluded.length > 0) {
+      stamps.push(
+        `${excluded.length} component${excluded.length === 1 ? '' : 's'} carry marks but measure ` +
+          `no outcome (${excluded.map((q) => q.label).join(', ')})`,
+      );
+    }
     if (warnings.all().some((w) => w.code === 'INDIRECT_SUPPRESSED')) {
       stamps.push('Indirect attainment suppressed — insufficient survey responses');
     }

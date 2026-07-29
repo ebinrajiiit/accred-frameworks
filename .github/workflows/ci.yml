@@ -81,10 +81,18 @@ jobs:
   staleness:
     name: Framework verification is current
     runs-on: ubuntu-latest
-    # Reports rather than blocks on pull requests: an unverified registry is a real problem,
-    # but it is the maintainer's problem to schedule, not a reason to reject a contributor's
-    # unrelated fix. The weekly scheduled run is where it is meant to be noticed.
-    continue-on-error: ${{ github.event_name == 'pull_request' }}
+    # Blocking on the weekly schedule; informational on push and pull request.
+    #
+    # An unverified or stale registry is a real problem, but it is a maintenance problem
+    # measured in months, not something a contributor's unrelated fix should be blocked on.
+    # Left blocking everywhere, this job would sit red for as long as it takes to check three
+    # manuals — and a build that is permanently red is a build nobody reads, which would cost
+    # more than it buys.
+    #
+    # Staleness is surfaced where it is actually seen instead: the README badge, on the
+    # landing page, which `gate:badge` keeps honest. The scheduled run is the maintainer's
+    # alarm clock, and there it does block.
+    continue-on-error: ${{ github.event_name != 'schedule' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

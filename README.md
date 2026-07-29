@@ -10,23 +10,37 @@ Versioned, provenance-carrying definitions of accreditation frameworks — NBA, 
 NIRF — with JSON Schemas and a pure attainment engine that computes outcome attainment from
 them.
 
-> **Status: pre-release, and everything in it is UNVERIFIED.**
+> **Status: the schemas are released; the framework data is UNVERIFIED.**
 >
-> The schemas are in place and the registry is seeded with NBA GAPC v3.0 and v4.0. But no
-> maintainer has yet checked those files clause by clause against an official NBA manual, so
-> every one carries `verified_on: null` and a note saying what a verifier must do.
-> `npm run staleness` exits non-zero because of this, on purpose. **Do not cut a release, and
-> do not rely on this for a submission, until it passes.**
+> [`@factsh/accred-schemas`](https://www.npmjs.com/package/@factsh/accred-schemas) is on npm.
+> It describes *shapes* and asserts nothing about any accreditation body's content, so nothing
+> in it is waiting on verification.
 >
-> Nothing is published to npm yet.
+> The framework *files* are a different matter. `nba/gapc-v3.0`, `nba/gapc-v4.0`, its WK
+> indicators and `naac/binary-2025` have not been checked clause by clause against an official
+> manual. Each carries `verified_on: null` and a note saying what a verifier must confirm, and
+> `npm run staleness` exits non-zero because of it, on purpose. **Do not rely on output derived
+> from them for a submission until it passes.**
+>
+> `@factsh/attainment-engine` is deliberately held back. Its arithmetic is covered by
+> hand-computed golden fixtures, but an npm version is permanent — deprecable, not removable —
+> and shipping one whose README has to lead with an UNVERIFIED warning is a claim that outlives
+> the fix. It goes out when the NBA files are verified.
 
-### Before the first release
+### Released
+
+- [x] `@factsh/accred-schemas@1.0.0` — 2026-07-29
+
+### Before the engine is released
 
 - [ ] Verify `nba/gapc-v3.0`, `nba/gapc-v4.0` and its WK indicators against the official NBA
       manuals; replace each `source_url` with the document URL and set `verified_on`
+- [ ] Verify `naac/binary-2025` against the NAAC manual for the relevant institution type; it
+      currently carries the seven criterion titles and nothing else, by design
 - [ ] `npm run staleness` passes — it currently exits non-zero, correctly
 - [x] Set the repository URL in `NOTICE` for CC-BY attribution
 - [x] Name a maintainer in `MAINTENANCE.md` and a security contact in `SECURITY.md`
+- [x] Publish under the `@factsh` scope, matching the npm org
 
 **This registry is vendor-neutral and free for anyone to use, including commercial products.**
 That is deliberate. Accreditation frameworks are public documents, and every institution and

@@ -1,0 +1,35 @@
+{
+  "title": "A — autonomous institute, question-wise end-semester data, target-ratio method",
+  "description": "The straightforward case: the institute sets and marks its own end-semester paper, so every question carries a course-outcome tag and nothing is apportioned. CO2 lands on level 0 rather than level 1, which is the point — a cohort that misses the lowest band is reported as missing it.",
+  "see_mode": "question_wise",
+  "cohort": {
+    "considered": 5,
+    "excluded": 0
+  },
+  "co": {
+    "CO1": {
+      "students_considered": 5,
+      "students_crossed": 4,
+      "ratio": 0.8,
+      "direct": 3,
+      "final": 3
+    },
+    "CO2": {
+      "students_considered": 5,
+      "students_crossed": 2,
+      "ratio": 0.4,
+      "direct": 0,
+      "final": 0
+    }
+  },
+  "po": {
+    "PO1": 2.25,
+    "PO2": 0
+  },
+  "warnings_include": [
+    "INDIRECT_ABSENT"
+  ],
+  "stamps_exclude": [
+    "SEE apportioned uniformly"
+  ]
+}

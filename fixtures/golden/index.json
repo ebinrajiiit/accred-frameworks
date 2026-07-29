@@ -1,0 +1,40 @@
+{
+  "_note": "Golden fixtures per SPEC §14.1. Synthetic data only — no real student ever appears here. Expected values are hand-computed; the arithmetic is written out in scripts/build-fixtures.mjs beside each fixture. Regenerate with `npm run fixtures`.",
+  "fixtures": [
+    {
+      "dir": "a-autonomous-question-wise",
+      "title": "A — autonomous institute, question-wise end-semester data, target-ratio method",
+      "policy": "level-target-ratio"
+    },
+    {
+      "dir": "b-affiliated-blueprint-apportioned",
+      "title": "B — affiliated college, end-semester totals apportioned by published blueprint",
+      "policy": "split-blueprint"
+    },
+    {
+      "dir": "c-abet-percentage-scale",
+      "title": "C — ABET programme, unbanded percentage scale, no programme-specific outcomes",
+      "policy": "percentage-credit-weighted"
+    },
+    {
+      "dir": "d-lab-internal-only",
+      "title": "D — laboratory course, entirely internal, best two of three reviews",
+      "policy": "internal-only"
+    },
+    {
+      "dir": "e-best-of-n-with-choice",
+      "title": "E — best one of two mid-semesters, with a choice question spanning two outcomes",
+      "policy": "level-target-ratio"
+    },
+    {
+      "dir": "f1-migration-v3-term",
+      "title": "F1 — a term taught before the cutover, computed under the retired 12-outcome framework",
+      "policy": "level-target-ratio"
+    },
+    {
+      "dir": "f2-migration-v4-term",
+      "title": "F2 — a term taught after the cutover, computed under the current 11-outcome framework",
+      "policy": "level-target-ratio"
+    }
+  ]
+}

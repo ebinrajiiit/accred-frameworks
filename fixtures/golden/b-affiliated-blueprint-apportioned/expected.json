@@ -1,0 +1,21 @@
+{
+  "title": "B — affiliated college, end-semester totals apportioned by published blueprint",
+  "description": "The college never sees the end-semester question paper; the university returns a total. The total is spread across outcomes in proportion to the published blueprint, the two halves are banded separately, and the report carries a stamp saying so. A reader must be able to tell an apportioned number from a measured one.",
+  "see_mode": "blueprint_uniform",
+  "cohort": {
+    "considered": 5,
+    "excluded": 0
+  },
+  "co": {
+    "CO1": {
+      "students_considered": 5,
+      "direct": 3
+    }
+  },
+  "stamps_include": [
+    "SEE apportioned by published blueprint"
+  ],
+  "warnings_include": [
+    "SEE_FALLBACK_USED"
+  ]
+}

@@ -1,0 +1,123 @@
+{
+  "$schema": "../../../packages/schemas/framework-outcomes.schema.json",
+
+  "id": "nba/gapc-v3.0",
+  "body": "NBA",
+  "version": "gapc-v3.0",
+  "kind": "outcomes",
+  "label": "NBA UG Engineering — Graduate Attributes and Programme Criteria v3.0 (12 programme outcomes)",
+  "programme_scope": "ug-engineering",
+
+  "effective_from": "2015-01-01",
+  "effective_to": "2025-01-01",
+  "supersedes": null,
+  "superseded_by": "nba/gapc-v4.0",
+
+  "source_document": "NBA Graduate Attributes and Programme Criteria, pre-2021 structure, derived from the Washington Accord graduate attributes",
+  "source_url": "https://www.nbaind.org/",
+  "retrieved_on": "2026-07-29",
+  "verified_on": null,
+  "verification_note": "Transcribed from the widely-published pre-2021 NBA/Washington Accord programme outcome set. The wording is standard and stable across NBA handbooks, but no maintainer has yet checked it clause by clause against an official NBA manual PDF, and source_url points at the body's site rather than a specific document. A verifier must locate the manual, confirm all twelve statements verbatim, replace source_url with the document URL, and set verified_on.",
+
+  "outcome_count": 12,
+  "pso_count": 2,
+  "require_wk_mapping": false,
+
+  "notes": "Retired in favour of gapc-v4.0, and retained deliberately. Terms taught before the cutover must continue to compute under twelve outcomes: restating a historical attainment figure under a framework that did not exist at the time destroys the audit trail. This file is also the source side of the v3 to v4 migration.",
+
+  "outcomes": [
+    {
+      "code": "PO1",
+      "kind": "po",
+      "sequence": 1,
+      "title": "Engineering knowledge",
+      "statement": "Apply the knowledge of mathematics, science, engineering fundamentals, and an engineering specialisation to the solution of complex engineering problems."
+    },
+    {
+      "code": "PO2",
+      "kind": "po",
+      "sequence": 2,
+      "title": "Problem analysis",
+      "statement": "Identify, formulate, review research literature, and analyse complex engineering problems reaching substantiated conclusions using first principles of mathematics, natural sciences, and engineering sciences."
+    },
+    {
+      "code": "PO3",
+      "kind": "po",
+      "sequence": 3,
+      "title": "Design/development of solutions",
+      "statement": "Design solutions for complex engineering problems and design system components or processes that meet the specified needs with appropriate consideration for public health and safety, and cultural, societal, and environmental considerations."
+    },
+    {
+      "code": "PO4",
+      "kind": "po",
+      "sequence": 4,
+      "title": "Conduct investigations of complex problems",
+      "statement": "Use research-based knowledge and research methods including design of experiments, analysis and interpretation of data, and synthesis of the information to provide valid conclusions."
+    },
+    {
+      "code": "PO5",
+      "kind": "po",
+      "sequence": 5,
+      "title": "Modern tool usage",
+      "statement": "Create, select, and apply appropriate techniques, resources, and modern engineering and IT tools including prediction and modelling to complex engineering activities with an understanding of the limitations."
+    },
+    {
+      "code": "PO6",
+      "kind": "po",
+      "sequence": 6,
+      "title": "The engineer and society",
+      "statement": "Apply reasoning informed by the contextual knowledge to assess societal, health, safety, legal and cultural issues and the consequent responsibilities relevant to the professional engineering practice."
+    },
+    {
+      "code": "PO7",
+      "kind": "po",
+      "sequence": 7,
+      "title": "Environment and sustainability",
+      "statement": "Understand the impact of the professional engineering solutions in societal and environmental contexts, and demonstrate the knowledge of, and need for sustainable development.",
+      "retired_in": "gapc-v4.0",
+      "migration_note": "Does not carry across mechanically. Its content is distributed across the v4 outcome 'The Engineer and the World' and the design and analysis outcomes. Any course outcome whose only mapping was to this outcome must be re-decided by a human rather than auto-assigned."
+    },
+    {
+      "code": "PO8",
+      "kind": "po",
+      "sequence": 8,
+      "title": "Ethics",
+      "statement": "Apply ethical principles and commit to professional ethics and responsibilities and norms of the engineering practice.",
+      "retired_in": "gapc-v4.0",
+      "migration_note": "Renumbered rather than removed — it becomes v4 PO7 — but the v4 statement broadens to include diversity and inclusion, so a straight code swap is a judgement and not a rename."
+    },
+    {
+      "code": "PO9",
+      "kind": "po",
+      "sequence": 9,
+      "title": "Individual and team work",
+      "statement": "Function effectively as an individual, and as a member or leader in diverse teams, and in multidisciplinary settings."
+    },
+    {
+      "code": "PO10",
+      "kind": "po",
+      "sequence": 10,
+      "title": "Communication",
+      "statement": "Communicate effectively on complex engineering activities with the engineering community and with society at large, such as being able to comprehend and write effective reports and design documentation, make effective presentations, and give and receive clear instructions."
+    },
+    {
+      "code": "PO11",
+      "kind": "po",
+      "sequence": 11,
+      "title": "Project management and finance",
+      "statement": "Demonstrate knowledge and understanding of the engineering and management principles and apply these to one's own work, as a member and leader in a team, to manage projects and in multidisciplinary environments."
+    },
+    {
+      "code": "PO12",
+      "kind": "po",
+      "sequence": 12,
+      "title": "Life-long learning",
+      "statement": "Recognise the need for, and have the preparation and ability to engage in independent and life-long learning in the broadest context of technological change."
+    }
+  ],
+
+  "pso_template": [
+    { "code": "PSO1", "kind": "pso", "sequence": 13, "statement": "" },
+    { "code": "PSO2", "kind": "pso", "sequence": 14, "statement": "" }
+  ]
+}

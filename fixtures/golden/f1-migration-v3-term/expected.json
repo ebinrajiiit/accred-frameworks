@@ -1,0 +1,20 @@
+{
+  "title": "F1 — a term taught before the cutover, computed under the retired 12-outcome framework",
+  "description": "A historical term keeps the framework that was in force when it was taught. Restating it under the newer framework would make an attainment figure that nobody computed at the time appear in the record, which destroys the audit trail. Note the outcome code: PO12 exists here and does not exist in F2.",
+  "framework_version": "gapc-v3.0",
+  "cohort": {
+    "considered": 5,
+    "excluded": 0
+  },
+  "co": {
+    "CO1": {
+      "students_considered": 5,
+      "students_crossed": 4,
+      "ratio": 0.8,
+      "direct": 3
+    }
+  },
+  "po": {
+    "PO12": 3
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "title": "C — ABET programme, unbanded percentage scale, no programme-specific outcomes",
+  "description": "Proves the engine is not built around one regime. The scale is a raw percentage rather than a 0–3 level, there is no PSO concept, and the rollup is credit-weighted. Nothing in the engine changes — only the policy document.",
+  "scale_kind": "percentage",
+  "cohort": {
+    "considered": 5,
+    "excluded": 0
+  },
+  "co": {
+    "CO1": {
+      "students_considered": 5,
+      "students_crossed": 3,
+      "direct": 60
+    }
+  }
+}

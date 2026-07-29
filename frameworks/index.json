@@ -1,0 +1,75 @@
+{
+  "registry": "Accreditation Framework Registry",
+  "maintainer": "FACTS-H Lab, IIIT Kottayam",
+  "data_version": "2026.07.0",
+  "schema_package": "@facts-h/accred-schemas@1.0.0",
+
+  "_note": "Every entry points at a file that validates against the schema its `kind` selects. `verified_on: null` means the transcription has not yet been checked against the official manual by a human — see DISCLAIMER.md. Nothing here is authoritative; the accrediting body's own manual is.",
+
+  "entries": [
+    {
+      "id": "nba/gapc-v3.0",
+      "body": "NBA",
+      "kind": "outcomes",
+      "path": "nba/gapc-v3.0/outcomes.json",
+      "label": "NBA UG Engineering — GAPC v3.0 (12 POs)",
+      "effective_from": "2015-01-01",
+      "effective_to": "2025-01-01",
+      "supersedes": null,
+      "superseded_by": "nba/gapc-v4.0",
+      "verified_on": null,
+      "status": "superseded"
+    },
+    {
+      "id": "nba/gapc-v4.0",
+      "body": "NBA",
+      "kind": "outcomes",
+      "path": "nba/gapc-v4.0/outcomes.json",
+      "label": "NBA UG Engineering — GAPC v4.0 (11 POs)",
+      "effective_from": "2025-01-01",
+      "effective_to": null,
+      "supersedes": "nba/gapc-v3.0",
+      "superseded_by": null,
+      "verified_on": null,
+      "status": "current"
+    },
+    {
+      "id": "nba/gapc-v4.0/wk-indicators",
+      "body": "NBA",
+      "kind": "knowledge-indicators",
+      "path": "nba/gapc-v4.0/wk-indicators.json",
+      "label": "Washington Accord knowledge indicators WK1–WK9",
+      "applies_to_framework": "nba/gapc-v4.0",
+      "verified_on": null,
+      "status": "current"
+    }
+  ],
+
+  "planned": [
+    {
+      "id": "naac/binary-2025",
+      "kind": "criteria",
+      "note": "NAAC post-February-2025: Binary accreditation plus Maturity-Based Graded Levels. Criteria, not outcomes — NAAC consumes CO/PO evidence rather than defining its own outcome set. Blocked on obtaining the official framework document; the schema is in place."
+    },
+    {
+      "id": "naac/mbgl",
+      "kind": "criteria",
+      "note": "Maturity-Based Graded Levels 1–5. Blocked on the official document."
+    },
+    {
+      "id": "nirf/2026",
+      "kind": "criteria",
+      "note": "Weighted parameters. Blocked on the official ranking framework document."
+    },
+    {
+      "id": "abet/eac",
+      "kind": "outcomes",
+      "note": "ABET EAC Student Outcomes 1–7. Deferred until the NBA files are verified, so the shape is settled on the case understood best first."
+    },
+    {
+      "id": "nba/sar-2025",
+      "kind": "criteria",
+      "note": "SAR 2025 Criterion 3 table shapes. Criteria that consume the attainment data produced under nba/gapc-v4.0."
+    }
+  ]
+}

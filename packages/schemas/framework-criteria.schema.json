@@ -1,0 +1,305 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://facts-h.iiitkottayam.ac.in/schemas/framework-criteria.schema.json",
+  "title": "Criterion-based accreditation framework",
+  "description": "A framework that defines criteria an INSTITUTION evidences, rather than outcomes a graduate attains. NAAC (Binary accreditation plus Maturity-Based Graded Levels, post-February 2025) and NIRF use this shape.\n\nWhy this is a separate schema from framework-outcomes: NAAC does not define its own outcome set. It consumes outcome evidence produced under some other framework — a programme accredited under NBA GAPC v4.0 supplies its CO/PO attainment as evidence towards NAAC criteria. Modelling NAAC as an outcome set would invent eleven NAAC outcomes that do not exist, and would make a programme appear to be accredited twice over on the same axis.\n\nThe `evidence_sources` block is what makes the consumption explicit and machine-checkable: a criterion declares which computed artefacts satisfy it.",
+  "type": "object",
+  "required": [
+    "id",
+    "body",
+    "version",
+    "kind",
+    "assessment_model",
+    "effective_from",
+    "source_document",
+    "source_url",
+    "retrieved_on",
+    "verified_on",
+    "criteria"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+/[a-z0-9.-]+$",
+      "examples": [
+        "naac/binary-2025",
+        "naac/mbgl",
+        "nirf/2026"
+      ]
+    },
+    "body": {
+      "type": "string",
+      "examples": [
+        "NAAC",
+        "NIRF"
+      ]
+    },
+    "version": {
+      "type": "string"
+    },
+    "kind": {
+      "const": "criteria"
+    },
+    "label": {
+      "type": "string"
+    },
+    "assessment_model": {
+      "enum": [
+        "binary",
+        "graded_levels",
+        "weighted_parameters",
+        "qualitative"
+      ],
+      "description": "binary — accredited / not accredited, no grade (NAAC post-Feb-2025).\ngraded_levels — maturity levels, e.g. NAAC MBGL 1-5.\nweighted_parameters — a weighted score, e.g. NIRF.\nqualitative — narrative judgement with no numeric outcome.\n\nThis exists so a report template can refuse to render a retired shape: NAAC's CGPA/RAF grading (A++ to C) is gone, and emitting it would produce a submission in a format the body no longer accepts."
+    },
+    "institution_scope": {
+      "type": "boolean",
+      "default": true,
+      "description": "True when criteria apply to the institution as a whole rather than to a single programme. NAAC is institutional; this is why its results do not belong on a programme attainment report."
+    },
+    "effective_from": {
+      "type": "string",
+      "format": "date"
+    },
+    "effective_to": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date"
+    },
+    "supersedes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "superseded_by": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "retires": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Assessment models this version withdraws, so a template can hard-fail rather than silently produce an obsolete submission.",
+      "examples": [
+        [
+          "cgpa-raf"
+        ]
+      ]
+    },
+    "source_document": {
+      "type": "string",
+      "minLength": 8
+    },
+    "source_url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "retrieved_on": {
+      "type": "string",
+      "format": "date"
+    },
+    "verified_on": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date",
+      "description": "Last date a human checked this file against the official manual at source_url. Null means nobody has yet; when null, verification_note is required and the staleness badge reads UNVERIFIED. Never fill this in to make a badge go green."
+    },
+    "verification_note": {
+      "type": "string",
+      "minLength": 20,
+      "description": "Required when verified_on is null: what state the transcription is in, and what a verifier must check."
+    },
+    "changelog": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "from",
+          "summary"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "from": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "affects": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "levels": {
+      "type": "array",
+      "description": "Required when assessment_model is graded_levels — e.g. NAAC MBGL levels 1 to 5.",
+      "items": {
+        "type": "object",
+        "required": [
+          "level",
+          "label"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "level": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "label": {
+            "type": "string"
+          },
+          "descriptor": {
+            "type": "string"
+          },
+          "criteria_required": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Criterion codes that must be satisfied to reach this level."
+          }
+        }
+      }
+    },
+    "criteria": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/criterion"
+      }
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "$defs": {
+    "criterion": {
+      "type": "object",
+      "required": [
+        "code",
+        "title"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "type": "string",
+          "examples": [
+            "1",
+            "1.1",
+            "1.1.1"
+          ]
+        },
+        "title": {
+          "type": "string"
+        },
+        "statement": {
+          "type": "string",
+          "description": "Official wording, verbatim."
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "weight": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Marks or points, where the body assigns them. Absent under a purely binary model."
+        },
+        "applies_to": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "university",
+              "autonomous",
+              "affiliated",
+              "college",
+              "all"
+            ]
+          }
+        },
+        "metric_type": {
+          "enum": [
+            "quantitative",
+            "qualitative",
+            "descriptive"
+          ],
+          "description": "Quantitative metrics can be computed from held data; qualitative ones need a written submission and cannot be auto-filled."
+        },
+        "evidence_sources": {
+          "type": "array",
+          "description": "Which computed artefacts satisfy this criterion. This is the join between an outcome-based framework and a criterion-based one: it lets an evidence pack be assembled from data the attainment engine already produced, instead of being re-keyed by hand into a submission portal.",
+          "items": {
+            "type": "object",
+            "required": [
+              "kind"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "kind": {
+                "enum": [
+                  "co_attainment",
+                  "po_attainment",
+                  "program_attainment",
+                  "articulation_matrix",
+                  "action_plan",
+                  "survey",
+                  "curriculum",
+                  "external"
+                ],
+                "description": "'external' means the criterion cannot be evidenced from attainment data at all and needs a separate submission — stating that is more useful than pretending coverage."
+              },
+              "description": {
+                "type": "string"
+              },
+              "required": {
+                "type": "boolean",
+                "default": true
+              }
+            }
+          }
+        },
+        "sub_criteria": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/criterion"
+          }
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "verified_on": {
+            "type": "null"
+          }
+        },
+        "required": [
+          "verified_on"
+        ]
+      },
+      "then": {
+        "required": [
+          "verification_note"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,291 @@
+{
+  "offering": {
+    "id": "offering:1",
+    "term_id": "term:1",
+    "section": "A",
+    "course": {
+      "id": "course:1",
+      "code": "CS201",
+      "title": "Synthetic Course",
+      "credits": 4,
+      "type": "theory"
+    }
+  },
+  "framework": {
+    "code": "abet-eac",
+    "version": "2024-25",
+    "outcome_count": 7
+  },
+  "course_outcomes": [
+    {
+      "id": "co:CO1",
+      "code": "CO1",
+      "statement": "CO1 — synthetic course outcome.",
+      "sequence": 1
+    },
+    {
+      "id": "co:CO2",
+      "code": "CO2",
+      "statement": "CO2 — synthetic course outcome.",
+      "sequence": 2
+    }
+  ],
+  "outcomes": [
+    {
+      "id": "outcome:SO1",
+      "code": "SO1",
+      "kind": "so",
+      "statement": "SO1 — synthetic programme outcome.",
+      "sequence": 1
+    },
+    {
+      "id": "outcome:SO2",
+      "code": "SO2",
+      "kind": "so",
+      "statement": "SO2 — synthetic programme outcome.",
+      "sequence": 2
+    }
+  ],
+  "articulation": [
+    {
+      "course_outcome_id": "co:CO1",
+      "outcome_id": "outcome:SO1",
+      "correlation": 3,
+      "justification": "CO1 is assessed through work requiring SO1-level capability."
+    },
+    {
+      "course_outcome_id": "co:CO2",
+      "outcome_id": "outcome:SO2",
+      "correlation": 3,
+      "justification": "CO2 is assessed through work requiring SO2-level capability."
+    }
+  ],
+  "assessments": [
+    {
+      "id": "A1",
+      "name": "Homework and quizzes",
+      "kind": "cie",
+      "max_marks": 20,
+      "weight_pct": 50
+    },
+    {
+      "id": "A2",
+      "name": "Examinations",
+      "kind": "see",
+      "max_marks": 20,
+      "weight_pct": 50
+    }
+  ],
+  "questions": [
+    {
+      "id": "A1:A",
+      "assessment_id": "A1",
+      "label": "A",
+      "max_marks": 10,
+      "sequence": 1
+    },
+    {
+      "id": "A1:B",
+      "assessment_id": "A1",
+      "label": "B",
+      "max_marks": 10,
+      "sequence": 2
+    },
+    {
+      "id": "A2:A",
+      "assessment_id": "A2",
+      "label": "A",
+      "max_marks": 10,
+      "sequence": 1
+    },
+    {
+      "id": "A2:B",
+      "assessment_id": "A2",
+      "label": "B",
+      "max_marks": 10,
+      "sequence": 2
+    }
+  ],
+  "question_outcomes": [
+    {
+      "question_id": "A1:A",
+      "course_outcome_id": "co:CO1",
+      "weight": 1
+    },
+    {
+      "question_id": "A1:B",
+      "course_outcome_id": "co:CO2",
+      "weight": 1
+    },
+    {
+      "question_id": "A2:A",
+      "course_outcome_id": "co:CO1",
+      "weight": 1
+    },
+    {
+      "question_id": "A2:B",
+      "course_outcome_id": "co:CO2",
+      "weight": 1
+    }
+  ],
+  "enrollments": [
+    {
+      "id": "en:S1",
+      "student_id": "st:S1",
+      "roll_no": "S1",
+      "display_name": "Student S1",
+      "status": "active"
+    },
+    {
+      "id": "en:S2",
+      "student_id": "st:S2",
+      "roll_no": "S2",
+      "display_name": "Student S2",
+      "status": "active"
+    },
+    {
+      "id": "en:S3",
+      "student_id": "st:S3",
+      "roll_no": "S3",
+      "display_name": "Student S3",
+      "status": "active"
+    },
+    {
+      "id": "en:S4",
+      "student_id": "st:S4",
+      "roll_no": "S4",
+      "display_name": "Student S4",
+      "status": "active"
+    },
+    {
+      "id": "en:S5",
+      "student_id": "st:S5",
+      "roll_no": "S5",
+      "display_name": "Student S5",
+      "status": "active"
+    }
+  ],
+  "marks": [
+    {
+      "enrollment_id": "en:S1",
+      "question_id": "A1:A",
+      "score": 8,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S1",
+      "question_id": "A1:B",
+      "score": 9,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S1",
+      "question_id": "A2:A",
+      "score": 9,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S1",
+      "question_id": "A2:B",
+      "score": 8,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S2",
+      "question_id": "A1:A",
+      "score": 7,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S2",
+      "question_id": "A1:B",
+      "score": 8,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S2",
+      "question_id": "A2:A",
+      "score": 8,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S2",
+      "question_id": "A2:B",
+      "score": 7,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S3",
+      "question_id": "A1:A",
+      "score": 6,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S3",
+      "question_id": "A1:B",
+      "score": 7,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S3",
+      "question_id": "A2:A",
+      "score": 7,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S3",
+      "question_id": "A2:B",
+      "score": 6,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S4",
+      "question_id": "A1:A",
+      "score": 9,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S4",
+      "question_id": "A1:B",
+      "score": 10,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S4",
+      "question_id": "A2:A",
+      "score": 10,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S4",
+      "question_id": "A2:B",
+      "score": 9,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S5",
+      "question_id": "A1:A",
+      "score": 5,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S5",
+      "question_id": "A1:B",
+      "score": 6,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S5",
+      "question_id": "A2:A",
+      "score": 6,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S5",
+      "question_id": "A2:B",
+      "score": 5,
+      "attempted": true
+    }
+  ],
+  "assessment_totals": []
+}

@@ -1,0 +1,145 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://facts-h.iiitkottayam.ac.in/schemas/framework-outcomes.schema.json",
+  "title": "Outcome-based accreditation framework",
+  "description": "A framework that defines outcomes a graduate is expected to attain — NBA's programme outcomes, ABET's student outcomes. Criterion-based bodies such as NAAC and NIRF do NOT use this schema; see framework-criteria.schema.json. The distinction is not cosmetic: an outcome is something a student demonstrates and a criterion is something an institution evidences, and conflating them misrepresents at least one of the two.",
+  "type": "object",
+  "required": ["id", "body", "version", "kind", "effective_from", "source_document", "source_url", "retrieved_on", "verified_on", "outcomes"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+/[a-z0-9.-]+$",
+      "description": "Registry path, e.g. nba/gapc-v4.0. Stable and never reused.",
+      "examples": ["nba/gapc-v4.0", "abet/eac"]
+    },
+    "body": { "type": "string", "description": "Accrediting body.", "examples": ["NBA", "ABET"] },
+    "version": { "type": "string", "examples": ["4.0", "gapc-v3.0"] },
+    "kind": { "const": "outcomes" },
+    "label": { "type": "string" },
+    "programme_scope": {
+      "type": "string",
+      "description": "Which programmes this outcome set applies to. A body may publish several.",
+      "examples": ["ug-engineering", "diploma", "pharmacy", "architecture", "mca", "management"]
+    },
+
+    "effective_from": { "type": "string", "format": "date" },
+    "effective_to": { "type": ["string", "null"], "format": "date" },
+    "supersedes": {
+      "type": ["string", "null"],
+      "description": "Registry id of the version this replaces. Superseded versions are never removed — historical evidence computed under them must stay reproducible."
+    },
+    "superseded_by": { "type": ["string", "null"] },
+
+    "source_document": {
+      "type": "string",
+      "minLength": 8,
+      "description": "Title of the official manual this was transcribed from. Required: an untraceable statement is worse than a missing one, because it will be trusted."
+    },
+    "source_url": { "type": "string", "format": "uri" },
+    "retrieved_on": { "type": "string", "format": "date" },
+    "verified_on": {
+      "type": ["string", "null"],
+      "format": "date",
+      "description": "Last date a human checked this file, statement by statement, against the official manual at source_url.\n\nNull means nobody has done that yet. Null is a legitimate and expected state for a newly transcribed framework, and it must never be filled in with a plausible-looking date to make a badge go green — the date is the only thing separating this registry from an unattributed copy-paste. When null, `verification_note` is required and the staleness badge reads UNVERIFIED.\n\nThe badge uses the OLDEST verified_on across all files, so one freshly-checked file cannot make a neglected one look current."
+    },
+    "verification_note": {
+      "type": "string",
+      "minLength": 20,
+      "description": "Required when verified_on is null: what state the transcription is in, and what specifically a verifier must check."
+    },
+
+    "changelog": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["from", "summary"],
+        "additionalProperties": false,
+        "properties": {
+          "from": { "type": "string" },
+          "summary": { "type": "string" },
+          "affects": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Outcome codes materially changed. Drives the migration workflow's human-decision gate."
+          }
+        }
+      }
+    },
+
+    "outcome_count": { "type": "integer", "minimum": 1 },
+    "pso_count": { "type": "integer", "minimum": 0 },
+    "require_wk_mapping": {
+      "type": "boolean",
+      "description": "Whether this framework expects outcomes to be mapped to knowledge indicators as a third dimension alongside programme outcomes."
+    },
+
+    "outcomes": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/outcome" }
+    },
+
+    "pso_template": {
+      "type": "array",
+      "description": "Programme-specific outcome placeholders. The framework fixes how many; the institution writes the statements, so these ship with empty statement text.",
+      "items": { "$ref": "#/$defs/outcome" }
+    },
+
+    "knowledge_indicators_ref": {
+      "type": "string",
+      "description": "Path to the knowledge-indicator definitions for this framework version, e.g. 'wk-indicators.json'. Definitions live in their own file because a knowledge indicator is a third mapping dimension alongside programme and programme-specific outcomes, not a property of either.",
+      "examples": ["wk-indicators.json"]
+    },
+
+    "notes": { "type": "string" }
+  },
+
+  "allOf": [
+    {
+      "if": { "properties": { "verified_on": { "type": "null" } }, "required": ["verified_on"] },
+      "then": {
+        "required": ["verification_note"],
+        "description": "An unverified file must say so in words, not just by omission."
+      }
+    }
+  ],
+
+  "$defs": {
+    "outcome": {
+      "type": "object",
+      "required": ["code", "kind", "statement"],
+      "additionalProperties": false,
+      "properties": {
+        "code": { "type": "string", "examples": ["PO1", "PSO1", "SO1"] },
+        "kind": {
+          "enum": ["po", "pso", "so"],
+          "description": "po = programme outcome, pso = programme-specific outcome, so = student outcome (ABET)."
+        },
+        "sequence": { "type": "integer", "minimum": 1 },
+        "title": { "type": "string", "description": "Short label, e.g. 'Engineering knowledge'." },
+        "statement": {
+          "type": "string",
+          "description": "The official wording. Reproduced VERBATIM in a Self-Assessment Report, so a paraphrase is a defect. May be empty only for a pso_template entry."
+        },
+        "knowledge_indicators": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Knowledge indicator codes the framework associates with this outcome."
+        },
+        "migrated_from": {
+          "type": "string",
+          "description": "Predecessor outcome code(s), '+' separated where two collapsed into one. Two codes here means the correspondence is NOT mechanical and needs a human decision.",
+          "examples": ["PO1", "PO6+PO7"]
+        },
+        "migration_note": { "type": "string" },
+        "retired_in": {
+          "type": "string",
+          "description": "Version in which this outcome ceased to exist. Retired outcomes are never deleted from the superseded file."
+        }
+      }
+    }
+  }
+}

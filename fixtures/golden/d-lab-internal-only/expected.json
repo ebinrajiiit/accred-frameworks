@@ -1,0 +1,25 @@
+{
+  "title": "D — laboratory course, entirely internal, best two of three reviews",
+  "description": "There is no end-semester examination, so the end-semester component is excluded outright rather than apportioned. A missed review is scored zero because it is a missed deliverable, not an absence from a scheduled exam — and best-of-N then drops that zero, which is the interaction worth pinning.",
+  "see_mode": "excluded",
+  "cohort": {
+    "considered": 5,
+    "excluded": 0
+  },
+  "co": {
+    "CO1": {
+      "students_considered": 5,
+      "students_crossed": 4,
+      "ratio": 0.8,
+      "direct": 3
+    }
+  },
+  "student_pct": {
+    "CO1": {
+      "S5": 0.7
+    }
+  },
+  "stamps_include": [
+    "SEE excluded"
+  ]
+}

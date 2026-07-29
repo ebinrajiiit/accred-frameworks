@@ -1,0 +1,560 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://facts-h.iiitkottayam.ac.in/schemas/attainment-policy.schema.json",
+  "title": "Attainment policy document",
+  "description": "The entire rulebook for computing attainment, as data (spec §7, principle P2). Resolved at four scopes with narrowest-wins precedence: course → course_type → program → institution.",
+  "type": "object",
+  "required": [
+    "id",
+    "version",
+    "scope",
+    "framework",
+    "scale",
+    "direct",
+    "cohort",
+    "indirect",
+    "weights",
+    "po",
+    "program",
+    "grade_scale",
+    "validation",
+    "reporting"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string",
+      "description": "Stable identifier, e.g. pack.autonomous-nba-ug-engineering-v4"
+    },
+    "version": {
+      "type": "string",
+      "description": "Semver. Pinned onto every run."
+    },
+    "label": {
+      "type": "string"
+    },
+    "effective_from": {
+      "type": "string",
+      "format": "date"
+    },
+    "scope": {
+      "type": "object",
+      "required": [
+        "type",
+        "ref"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "institution",
+            "program",
+            "course_type",
+            "course"
+          ]
+        },
+        "ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "framework": {
+      "type": "object",
+      "description": "The outcome framework this policy binds to. The engine refuses to run when the program's outcome set belongs to a different one — this is what prevents a 12-PO computation being presented for a post-2025 submission.",
+      "required": [
+        "code",
+        "version"
+      ],
+      "properties": {
+        "code": {
+          "type": "string",
+          "examples": [
+            "nba-ug-eng",
+            "abet-eac"
+          ]
+        },
+        "version": {
+          "type": "string",
+          "examples": [
+            "gapc-v4.0",
+            "gapc-v3.0"
+          ]
+        },
+        "outcome_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "pso_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "require_wk_mapping": {
+          "type": "boolean"
+        },
+        "supersedes": {
+          "type": "string"
+        }
+      }
+    },
+    "scale": {
+      "type": "object",
+      "required": [
+        "kind",
+        "min",
+        "max"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "level",
+            "percentage"
+          ]
+        },
+        "min": {
+          "type": "number"
+        },
+        "max": {
+          "type": "number"
+        }
+      }
+    },
+    "direct": {
+      "type": "object",
+      "required": [
+        "method",
+        "target_pct",
+        "bands",
+        "combination",
+        "cie_weight",
+        "see_weight",
+        "see_mode"
+      ],
+      "properties": {
+        "method": {
+          "enum": [
+            "target_ratio",
+            "class_average",
+            "percentage"
+          ]
+        },
+        "target_pct": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "bands": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "at_least",
+              "level"
+            ],
+            "properties": {
+              "at_least": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1,
+                "description": "Ratio, not percentage."
+              },
+              "level": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        "combination": {
+          "enum": [
+            "weighted_components",
+            "split"
+          ]
+        },
+        "cie_weight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "see_weight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "see_mode": {
+          "enum": [
+            "question_wise",
+            "blueprint_uniform",
+            "uniform_split",
+            "threshold_proxy",
+            "excluded"
+          ]
+        },
+        "see_threshold_proxy_pct": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        }
+      }
+    },
+    "cohort": {
+      "type": "object",
+      "required": [
+        "absent_handling",
+        "malpractice_handling",
+        "include_backlog_students",
+        "include_audit_students",
+        "dropped_handling",
+        "min_cohort_size"
+      ],
+      "properties": {
+        "absent_handling": {
+          "enum": [
+            "exclude",
+            "zero"
+          ]
+        },
+        "malpractice_handling": {
+          "enum": [
+            "exclude",
+            "zero"
+          ]
+        },
+        "include_backlog_students": {
+          "type": "boolean"
+        },
+        "include_audit_students": {
+          "type": "boolean"
+        },
+        "dropped_handling": {
+          "enum": [
+            "exclude",
+            "include"
+          ]
+        },
+        "min_cohort_size": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "assessment_groups": {
+      "type": "object",
+      "properties": {
+        "default_selection_rule": {
+          "enum": [
+            "all",
+            "best_n"
+          ]
+        },
+        "best_n_ties": {
+          "enum": [
+            "first",
+            "last"
+          ]
+        }
+      }
+    },
+    "indirect": {
+      "type": "object",
+      "required": [
+        "source",
+        "scale_min",
+        "scale_max",
+        "mapping",
+        "min_responses"
+      ],
+      "properties": {
+        "source": {
+          "type": "string"
+        },
+        "scale_min": {
+          "type": "number"
+        },
+        "scale_max": {
+          "type": "number"
+        },
+        "mapping": {
+          "enum": [
+            "linear",
+            "threshold"
+          ]
+        },
+        "threshold_rating": {
+          "type": "number"
+        },
+        "min_responses": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Below this, indirect is not computed and final = direct, stamped on the report."
+        },
+        "min_response_rate": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "weights": {
+      "type": "object",
+      "required": [
+        "direct",
+        "indirect"
+      ],
+      "description": "Must sum to 1.",
+      "properties": {
+        "direct": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "indirect": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "po": {
+      "type": "object",
+      "required": [
+        "method",
+        "correlation_scale",
+        "ignore_correlation_below"
+      ],
+      "properties": {
+        "method": {
+          "enum": [
+            "weighted_average",
+            "scaled",
+            "max"
+          ]
+        },
+        "correlation_scale": {
+          "type": "object",
+          "required": [
+            "min",
+            "max"
+          ],
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          }
+        },
+        "ignore_correlation_below": {
+          "type": "number"
+        }
+      }
+    },
+    "program": {
+      "type": "object",
+      "required": [
+        "course_weighting",
+        "weights",
+        "default_target",
+        "require_action_plan_when_gap_above"
+      ],
+      "properties": {
+        "course_weighting": {
+          "enum": [
+            "equal",
+            "credits"
+          ]
+        },
+        "indirect_sources": {
+          "type": "array",
+          "description": "Weights must sum to 1.",
+          "items": {
+            "type": "object",
+            "required": [
+              "kind",
+              "weight"
+            ],
+            "properties": {
+              "kind": {
+                "type": "string"
+              },
+              "weight": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              }
+            }
+          }
+        },
+        "weights": {
+          "type": "object",
+          "required": [
+            "direct",
+            "indirect"
+          ],
+          "properties": {
+            "direct": {
+              "type": "number"
+            },
+            "indirect": {
+              "type": "number"
+            }
+          }
+        },
+        "default_target": {
+          "type": "number"
+        },
+        "targets_by_outcome": {
+          "type": "object",
+          "description": "Keys must exist in the bound framework's outcome set — a PO12 target is rejected under gapc-v4.0.",
+          "additionalProperties": {
+            "type": "number"
+          }
+        },
+        "require_action_plan_when_gap_above": {
+          "type": "number"
+        }
+      }
+    },
+    "migration": {
+      "type": "object",
+      "description": "Controls the v3 → v4 remapping workflow. Retired POs never auto-map.",
+      "required": [
+        "from_version",
+        "to_version",
+        "auto_map_unambiguous",
+        "require_human_decision_for",
+        "require_rationale_on_change",
+        "recompute_historical_terms"
+      ],
+      "properties": {
+        "from_version": {
+          "type": "string"
+        },
+        "to_version": {
+          "type": "string"
+        },
+        "auto_map_unambiguous": {
+          "type": "boolean"
+        },
+        "require_human_decision_for": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "require_rationale_on_change": {
+          "type": "boolean"
+        },
+        "recompute_historical_terms": {
+          "type": "boolean",
+          "description": "Keep false. Historical terms stay computed under the framework in force at the time."
+        }
+      }
+    },
+    "grade_scale": {
+      "type": "object",
+      "required": [
+        "enabled",
+        "mapping"
+      ],
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "mapping": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          }
+        }
+      }
+    },
+    "validation": {
+      "type": "object",
+      "required": [
+        "min_assessments_per_co",
+        "require_all_cos_assessed",
+        "require_justification_in_articulation",
+        "warn_co_mapped_to_more_than_n_pos",
+        "question_marks_must_total_assessment_max"
+      ],
+      "properties": {
+        "min_assessments_per_co": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "require_all_cos_assessed": {
+          "type": "boolean"
+        },
+        "require_justification_in_articulation": {
+          "type": "boolean"
+        },
+        "require_wk_tag_per_co": {
+          "type": "boolean"
+        },
+        "warn_co_mapped_to_more_than_n_pos": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "question_marks_must_total_assessment_max": {
+          "type": "boolean"
+        }
+      }
+    },
+    "reporting": {
+      "type": "object",
+      "required": [
+        "stamp_policy_version",
+        "stamp_engine_version",
+        "stamp_fallbacks_used",
+        "mark_overrides_visibly",
+        "block_export_when_gap_without_action"
+      ],
+      "properties": {
+        "stamp_policy_version": {
+          "type": "boolean"
+        },
+        "stamp_framework_version": {
+          "type": "boolean"
+        },
+        "stamp_engine_version": {
+          "type": "boolean"
+        },
+        "stamp_fallbacks_used": {
+          "type": "boolean"
+        },
+        "mark_overrides_visibly": {
+          "type": "boolean"
+        },
+        "block_export_when_gap_without_action": {
+          "type": "boolean"
+        }
+      }
+    },
+    "verifier": {
+      "type": "object",
+      "description": "Verifier mode (spec §19) — recompute someone else's numbers and report disagreements.",
+      "properties": {
+        "tolerance": {
+          "type": "number",
+          "minimum": 0
+        },
+        "attempt_policy_inference": {
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  "patternProperties": {
+    "^_comment": {
+      "type": "string",
+      "description": "Human annotation, stripped during resolution."
+    }
+  },
+  "additionalProperties": false
+}

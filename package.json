@@ -1,0 +1,29 @@
+{
+  "name": "accreditation-registry",
+  "version": "2026.07.0",
+  "private": true,
+  "description": "Vendor-neutral accreditation framework registry, JSON schemas, and a pure attainment engine.",
+  "license": "Apache-2.0",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "test": "vitest run",
+    "validate": "vitest run",
+    "staleness": "node scripts/staleness.mjs",
+    "fixtures": "node scripts/build-fixtures.mjs"
+  },
+  "devDependencies": {
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "vitest": "^4.1.10"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ebinrajiiit/accred-frameworks.git"
+  },
+  "homepage": "https://github.com/ebinrajiiit/accred-frameworks#readme",
+  "bugs": {
+    "url": "https://github.com/ebinrajiiit/accred-frameworks/issues"
+  }
+}

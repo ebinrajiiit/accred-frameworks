@@ -1,0 +1,25 @@
+{
+  "name": "@facts-h/accred-schemas",
+  "version": "1.0.0",
+  "description": "JSON Schemas for accreditation frameworks, attainment policies, and the engine's input and output contracts.",
+  "license": "Apache-2.0",
+  "files": [
+    "*.schema.json"
+  ],
+  "exports": {
+    "./framework-outcomes": "./framework-outcomes.schema.json",
+    "./framework-criteria": "./framework-criteria.schema.json",
+    "./attainment-policy": "./attainment-policy.schema.json",
+    "./engine-input": "./engine-input.schema.json",
+    "./engine-output": "./engine-output.schema.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ebinrajiiit/accred-frameworks.git",
+    "directory": "packages/schemas"
+  },
+  "homepage": "https://github.com/ebinrajiiit/accred-frameworks#readme",
+  "bugs": {
+    "url": "https://github.com/ebinrajiiit/accred-frameworks/issues"
+  }
+}

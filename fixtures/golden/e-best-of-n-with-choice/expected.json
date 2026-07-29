@@ -1,0 +1,36 @@
+{
+  "title": "E — best one of two mid-semesters, with a choice question spanning two outcomes",
+  "description": "The two computations the specification singles out as most often got wrong, in one fixture. Choice alternatives map to different outcomes, so each student carries their own denominator and each outcome has its own cohort. Best-of-N is resolved per outcome, not once per student.",
+  "cohort": {
+    "considered": 4,
+    "excluded": 0
+  },
+  "co": {
+    "CO1": {
+      "students_considered": 4,
+      "students_crossed": 3,
+      "ratio": 0.75,
+      "direct": 2
+    },
+    "CO2": {
+      "students_considered": 2
+    },
+    "CO3": {
+      "students_considered": 2
+    }
+  },
+  "student_pct": {
+    "CO1": {
+      "S1": 0.9,
+      "S2": 0.8
+    },
+    "CO2": {
+      "S1": 0.8
+    }
+  },
+  "student_maximum": {
+    "CO2": {
+      "S1": 10
+    }
+  }
+}

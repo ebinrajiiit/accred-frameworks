@@ -1,0 +1,52 @@
+Accreditation Framework Registry and Attainment Engine
+Copyright 2026 FACTS-H Lab, Indian Institute of Information Technology Kottayam
+
+Maintainer: Dr Ebin Deni Raj <ebindeniraj@iiitkottayam.ac.in>
+
+================================================================================
+TWO LICENCES APPLY. WHICH ONE DEPENDS ON THE PATH.
+================================================================================
+
+CODE — Apache License 2.0 (see LICENSE)
+
+    packages/engine/**
+    packages/schemas/**            (the JSON Schema documents themselves)
+    scripts/**
+    Any .ts, .js, .mjs or .cjs file anywhere in this repository
+
+    Apache-2.0 rather than MIT because it carries an explicit patent grant,
+    and because it is the licence commercial vendors are most comfortable
+    adopting. Vendor adoption is the point: a registry nobody else will use
+    is not a contribution.
+
+DATA — Creative Commons Attribution 4.0 International (see LICENSE-DATA)
+
+    frameworks/**                  (accreditation framework definitions)
+    fixtures/**                    (golden test archetypes — synthetic only)
+
+    CC-BY-4.0 rather than CC0 because attribution is the entire return on
+    this contribution. Anyone may use, adapt and redistribute these files,
+    including commercially, provided the source is credited.
+
+================================================================================
+ATTRIBUTION
+================================================================================
+
+When redistributing the framework data, credit:
+
+    Accreditation Framework Registry
+    FACTS-H Lab, IIIT Kottayam
+    https://github.com/ebinrajiiit/accred-frameworks
+
+================================================================================
+WHAT THIS REPOSITORY IS NOT
+================================================================================
+
+Not an official source for any accreditation framework. The framework files
+are a convenience transcription of published manuals. See DISCLAIMER.md before
+relying on them for a submission.
+
+No student data, roll numbers, marks, institutional rubrics or institution
+config packs appear anywhere in this repository, and none ever should. A
+config pack encodes an institution's own assessment policy — it belongs to
+that institution, not to this project. See CONTRIBUTING.md.

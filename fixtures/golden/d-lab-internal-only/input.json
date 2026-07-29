@@ -1,0 +1,250 @@
+{
+  "offering": {
+    "id": "offering:1",
+    "term_id": "term:1",
+    "section": "A",
+    "course": {
+      "id": "course:1",
+      "code": "CS201",
+      "title": "Synthetic Course",
+      "credits": 2,
+      "type": "lab"
+    }
+  },
+  "framework": {
+    "code": "nba-ug-eng",
+    "version": "gapc-v4.0",
+    "outcome_count": 11,
+    "supersedes": "gapc-v3.0"
+  },
+  "course_outcomes": [
+    {
+      "id": "co:CO1",
+      "code": "CO1",
+      "statement": "CO1 — synthetic course outcome.",
+      "sequence": 1
+    }
+  ],
+  "outcomes": [
+    {
+      "id": "outcome:PO1",
+      "code": "PO1",
+      "kind": "po",
+      "statement": "PO1 — synthetic programme outcome.",
+      "sequence": 1
+    }
+  ],
+  "articulation": [
+    {
+      "course_outcome_id": "co:CO1",
+      "outcome_id": "outcome:PO1",
+      "correlation": 3,
+      "justification": "CO1 is assessed through work requiring PO1-level capability."
+    }
+  ],
+  "assessments": [
+    {
+      "id": "R1",
+      "name": "Review 1",
+      "kind": "cie",
+      "max_marks": 10,
+      "weight_pct": 1,
+      "group_id": "G"
+    },
+    {
+      "id": "R2",
+      "name": "Review 2",
+      "kind": "cie",
+      "max_marks": 10,
+      "weight_pct": 1,
+      "group_id": "G"
+    },
+    {
+      "id": "R3",
+      "name": "Review 3",
+      "kind": "cie",
+      "max_marks": 10,
+      "weight_pct": 1,
+      "group_id": "G"
+    }
+  ],
+  "questions": [
+    {
+      "id": "R1:Rubric",
+      "assessment_id": "R1",
+      "label": "Rubric",
+      "max_marks": 10,
+      "sequence": 1
+    },
+    {
+      "id": "R2:Rubric",
+      "assessment_id": "R2",
+      "label": "Rubric",
+      "max_marks": 10,
+      "sequence": 1
+    },
+    {
+      "id": "R3:Rubric",
+      "assessment_id": "R3",
+      "label": "Rubric",
+      "max_marks": 10,
+      "sequence": 1
+    }
+  ],
+  "question_outcomes": [
+    {
+      "question_id": "R1:Rubric",
+      "course_outcome_id": "co:CO1",
+      "weight": 1
+    },
+    {
+      "question_id": "R2:Rubric",
+      "course_outcome_id": "co:CO1",
+      "weight": 1
+    },
+    {
+      "question_id": "R3:Rubric",
+      "course_outcome_id": "co:CO1",
+      "weight": 1
+    }
+  ],
+  "enrollments": [
+    {
+      "id": "en:S1",
+      "student_id": "st:S1",
+      "roll_no": "S1",
+      "display_name": "Student S1",
+      "status": "active"
+    },
+    {
+      "id": "en:S2",
+      "student_id": "st:S2",
+      "roll_no": "S2",
+      "display_name": "Student S2",
+      "status": "active"
+    },
+    {
+      "id": "en:S3",
+      "student_id": "st:S3",
+      "roll_no": "S3",
+      "display_name": "Student S3",
+      "status": "active"
+    },
+    {
+      "id": "en:S4",
+      "student_id": "st:S4",
+      "roll_no": "S4",
+      "display_name": "Student S4",
+      "status": "active"
+    },
+    {
+      "id": "en:S5",
+      "student_id": "st:S5",
+      "roll_no": "S5",
+      "display_name": "Student S5",
+      "status": "active"
+    }
+  ],
+  "marks": [
+    {
+      "enrollment_id": "en:S1",
+      "question_id": "R1:Rubric",
+      "score": 9,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S1",
+      "question_id": "R2:Rubric",
+      "score": 8,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S1",
+      "question_id": "R3:Rubric",
+      "score": 7,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S2",
+      "question_id": "R1:Rubric",
+      "score": 8,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S2",
+      "question_id": "R2:Rubric",
+      "score": 7,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S2",
+      "question_id": "R3:Rubric",
+      "score": 6,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S3",
+      "question_id": "R1:Rubric",
+      "score": 7,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S3",
+      "question_id": "R2:Rubric",
+      "score": 6,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S3",
+      "question_id": "R3:Rubric",
+      "score": 5,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S4",
+      "question_id": "R1:Rubric",
+      "score": 10,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S4",
+      "question_id": "R2:Rubric",
+      "score": 9,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S4",
+      "question_id": "R3:Rubric",
+      "score": 8,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S5",
+      "question_id": "R1:Rubric",
+      "score": 8,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S5",
+      "question_id": "R2:Rubric",
+      "score": 6,
+      "attempted": true
+    }
+  ],
+  "assessment_totals": [
+    {
+      "enrollment_id": "en:S5",
+      "assessment_id": "R3",
+      "status": "absent"
+    }
+  ],
+  "assessment_groups": [
+    {
+      "id": "G",
+      "name": "Laboratory reviews",
+      "weight_pct": 100,
+      "selection_rule": "best_n",
+      "n": 2
+    }
+  ]
+}

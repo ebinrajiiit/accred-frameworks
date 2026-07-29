@@ -1,0 +1,188 @@
+{
+  "offering": {
+    "id": "offering:1",
+    "term_id": "term:1",
+    "section": "A",
+    "course": {
+      "id": "course:1",
+      "code": "CS201",
+      "title": "Synthetic Course",
+      "credits": 4,
+      "type": "theory"
+    }
+  },
+  "framework": {
+    "code": "nba-ug-eng",
+    "version": "gapc-v3.0",
+    "outcome_count": 12
+  },
+  "course_outcomes": [
+    {
+      "id": "co:CO1",
+      "code": "CO1",
+      "statement": "CO1 — synthetic course outcome.",
+      "sequence": 1
+    }
+  ],
+  "outcomes": [
+    {
+      "id": "outcome:PO12",
+      "code": "PO12",
+      "kind": "po",
+      "statement": "PO12 — synthetic programme outcome.",
+      "sequence": 1
+    }
+  ],
+  "articulation": [
+    {
+      "course_outcome_id": "co:CO1",
+      "outcome_id": "outcome:PO12",
+      "correlation": 3,
+      "justification": "CO1 is assessed through work requiring PO12-level capability."
+    }
+  ],
+  "assessments": [
+    {
+      "id": "CIE",
+      "name": "Internal assessment",
+      "kind": "cie",
+      "max_marks": 10,
+      "weight_pct": 40
+    },
+    {
+      "id": "SEE",
+      "name": "End-semester examination",
+      "kind": "see",
+      "max_marks": 10,
+      "weight_pct": 60
+    }
+  ],
+  "questions": [
+    {
+      "id": "CIE:Q1",
+      "assessment_id": "CIE",
+      "label": "Q1",
+      "max_marks": 10,
+      "sequence": 1
+    },
+    {
+      "id": "SEE:Q1",
+      "assessment_id": "SEE",
+      "label": "Q1",
+      "max_marks": 10,
+      "sequence": 1
+    }
+  ],
+  "question_outcomes": [
+    {
+      "question_id": "CIE:Q1",
+      "course_outcome_id": "co:CO1",
+      "weight": 1
+    },
+    {
+      "question_id": "SEE:Q1",
+      "course_outcome_id": "co:CO1",
+      "weight": 1
+    }
+  ],
+  "enrollments": [
+    {
+      "id": "en:S1",
+      "student_id": "st:S1",
+      "roll_no": "S1",
+      "display_name": "Student S1",
+      "status": "active"
+    },
+    {
+      "id": "en:S2",
+      "student_id": "st:S2",
+      "roll_no": "S2",
+      "display_name": "Student S2",
+      "status": "active"
+    },
+    {
+      "id": "en:S3",
+      "student_id": "st:S3",
+      "roll_no": "S3",
+      "display_name": "Student S3",
+      "status": "active"
+    },
+    {
+      "id": "en:S4",
+      "student_id": "st:S4",
+      "roll_no": "S4",
+      "display_name": "Student S4",
+      "status": "active"
+    },
+    {
+      "id": "en:S5",
+      "student_id": "st:S5",
+      "roll_no": "S5",
+      "display_name": "Student S5",
+      "status": "active"
+    }
+  ],
+  "marks": [
+    {
+      "enrollment_id": "en:S1",
+      "question_id": "CIE:Q1",
+      "score": 8,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S1",
+      "question_id": "SEE:Q1",
+      "score": 8,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S2",
+      "question_id": "CIE:Q1",
+      "score": 7,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S2",
+      "question_id": "SEE:Q1",
+      "score": 7,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S3",
+      "question_id": "CIE:Q1",
+      "score": 6,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S3",
+      "question_id": "SEE:Q1",
+      "score": 6,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S4",
+      "question_id": "CIE:Q1",
+      "score": 9,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S4",
+      "question_id": "SEE:Q1",
+      "score": 9,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S5",
+      "question_id": "CIE:Q1",
+      "score": 5,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S5",
+      "question_id": "SEE:Q1",
+      "score": 5,
+      "attempted": true
+    }
+  ],
+  "assessment_totals": []
+}

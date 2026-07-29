@@ -1,0 +1,20 @@
+{
+  "title": "F2 — a term taught after the cutover, computed under the current 11-outcome framework",
+  "description": "The same programme, the same marks, one term later. Only the framework differs. The two terms are reported as two series; averaging them would produce a number describing no framework at all. Computing F1 under this policy throws — see the fixture test.",
+  "framework_version": "gapc-v4.0",
+  "cohort": {
+    "considered": 5,
+    "excluded": 0
+  },
+  "co": {
+    "CO1": {
+      "students_considered": 5,
+      "students_crossed": 4,
+      "ratio": 0.8,
+      "direct": 3
+    }
+  },
+  "po": {
+    "PO11": 3
+  }
+}

@@ -1,0 +1,143 @@
+{
+  "id": "fixture.level-target-ratio",
+  "version": "1.0.0",
+  "label": "Synthetic: 0-3 level scale, target-ratio method, question-wise SEE",
+  "scope": {
+    "type": "institution",
+    "ref": null
+  },
+  "framework": {
+    "code": "nba-ug-eng",
+    "version": "gapc-v4.0",
+    "outcome_count": 11,
+    "pso_count": 2,
+    "require_wk_mapping": false,
+    "supersedes": "gapc-v3.0"
+  },
+  "scale": {
+    "kind": "level",
+    "min": 0,
+    "max": 3
+  },
+  "direct": {
+    "method": "target_ratio",
+    "target_pct": 60,
+    "bands": [
+      {
+        "at_least": 0.6,
+        "level": 1
+      },
+      {
+        "at_least": 0.7,
+        "level": 2
+      },
+      {
+        "at_least": 0.8,
+        "level": 3
+      }
+    ],
+    "combination": "weighted_components",
+    "cie_weight": 0.4,
+    "see_weight": 0.6,
+    "see_mode": "question_wise",
+    "see_threshold_proxy_pct": 50
+  },
+  "cohort": {
+    "absent_handling": "exclude",
+    "malpractice_handling": "exclude",
+    "include_backlog_students": false,
+    "include_audit_students": false,
+    "dropped_handling": "exclude",
+    "min_cohort_size": 1
+  },
+  "assessment_groups": {
+    "default_selection_rule": "all",
+    "best_n_ties": "first"
+  },
+  "indirect": {
+    "source": "course_exit_survey",
+    "scale_min": 1,
+    "scale_max": 5,
+    "mapping": "linear",
+    "threshold_rating": 4,
+    "min_responses": 10,
+    "min_response_rate": 0.3
+  },
+  "weights": {
+    "direct": 0.8,
+    "indirect": 0.2
+  },
+  "po": {
+    "method": "weighted_average",
+    "correlation_scale": {
+      "min": 1,
+      "max": 3
+    },
+    "ignore_correlation_below": 1
+  },
+  "program": {
+    "course_weighting": "credits",
+    "indirect_sources": [
+      {
+        "kind": "program_exit_survey",
+        "weight": 0.5
+      },
+      {
+        "kind": "alumni_survey",
+        "weight": 0.3
+      },
+      {
+        "kind": "employer_survey",
+        "weight": 0.2
+      }
+    ],
+    "weights": {
+      "direct": 0.8,
+      "indirect": 0.2
+    },
+    "default_target": 2,
+    "targets_by_outcome": {},
+    "require_action_plan_when_gap_above": 0
+  },
+  "migration": {
+    "from_version": "gapc-v3.0",
+    "to_version": "gapc-v4.0",
+    "auto_map_unambiguous": true,
+    "require_human_decision_for": [
+      "PO7",
+      "PO8"
+    ],
+    "require_rationale_on_change": true,
+    "recompute_historical_terms": false
+  },
+  "grade_scale": {
+    "enabled": false,
+    "mapping": {
+      "O": 95,
+      "A+": 85,
+      "A": 75,
+      "B+": 65,
+      "B": 55,
+      "C": 45,
+      "P": 40,
+      "F": 0
+    }
+  },
+  "validation": {
+    "min_assessments_per_co": 1,
+    "require_all_cos_assessed": true,
+    "require_justification_in_articulation": false,
+    "require_wk_tag_per_co": false,
+    "warn_co_mapped_to_more_than_n_pos": 6,
+    "question_marks_must_total_assessment_max": true
+  },
+  "reporting": {
+    "stamp_policy_version": true,
+    "stamp_framework_version": true,
+    "stamp_engine_version": true,
+    "stamp_fallbacks_used": true,
+    "mark_overrides_visibly": true,
+    "block_export_when_gap_without_action": true
+  },
+  "effective_from": "2026-01-01"
+}

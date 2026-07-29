@@ -1,0 +1,46 @@
+{
+  "name": "@facts-h/attainment-engine",
+  "version": "0.1.0",
+  "description": "Pure attainment engine — policy document in, traceable result document out. No I/O, no database, no institution specifics.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ebinrajiiit/accred-frameworks.git",
+    "directory": "packages/engine"
+  },
+  "keywords": [
+    "accreditation",
+    "outcome-based-education",
+    "nba",
+    "abet",
+    "attainment"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "ajv": "^8.17.1",
+    "typescript": "^5.7.2",
+    "vitest": "^4.1.10"
+  },
+  "homepage": "https://github.com/ebinrajiiit/accred-frameworks#readme",
+  "bugs": {
+    "url": "https://github.com/ebinrajiiit/accred-frameworks/issues"
+  }
+}

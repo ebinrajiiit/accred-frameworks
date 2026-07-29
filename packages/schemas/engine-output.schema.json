@@ -1,0 +1,245 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://facts-h.iiitkottayam.ac.in/schemas/engine-output.schema.json",
+  "title": "Attainment engine result document",
+  "description": "The result of one engine run over one course offering.\n\nTwo properties of this document are load-bearing and are the reason it is published as a contract rather than kept internal:\n\n1. Every computed value carries a `trace` that resolves to the raw marks behind it — down to one student's score on one sub-question. A number an evaluator cannot follow to its evidence is an assertion, not evidence.\n2. A run pins policy version, framework version and an input hash. Recomputing an archived run from the same inputs must reproduce it byte for byte, so the clock and any identifiers are inputs rather than things the engine reads.",
+  "type": "object",
+  "required": ["engine_version", "policy_id", "policy_version", "framework", "input_hash", "computed_at", "offering_id", "scale", "see_mode", "stamps", "cohort_summary", "co_attainments", "po_attainments", "warnings"],
+  "properties": {
+    "$schema": { "type": "string" },
+
+    "engine_version": { "type": "string" },
+    "policy_id": { "type": "string" },
+    "policy_version": { "type": "string" },
+    "framework": {
+      "type": "object",
+      "required": ["code", "version"],
+      "properties": {
+        "code": { "type": "string" },
+        "version": { "type": "string" },
+        "outcome_count": { "type": "integer" },
+        "supersedes": { "type": "string" }
+      }
+    },
+    "input_hash": {
+      "type": "string",
+      "description": "Hash of the canonicalised input, policy and framework. Order-independent, so a differing hash means the inputs genuinely changed — which is how a stored run is detected as stale rather than served as though it were current."
+    },
+    "computed_at": { "type": "string", "format": "date-time", "description": "Supplied by the caller. The engine does not read the clock." },
+    "computed_by": { "type": "string" },
+    "run_id": { "type": "string" },
+    "offering_id": { "type": "string" },
+
+    "scale": {
+      "type": "object",
+      "required": ["kind", "min", "max"],
+      "properties": {
+        "kind": { "enum": ["level", "percentage"] },
+        "min": { "type": "number" },
+        "max": { "type": "number" }
+      }
+    },
+    "see_mode": { "type": "string" },
+
+    "stamps": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "What a reader must be told about this run — the framework and policy versions, and any fallback used. A result computed from an apportioned total is never presented as though it were measured question-wise."
+    },
+
+    "cohort_summary": { "$ref": "#/$defs/cohort" },
+
+    "co_attainments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["course_outcome_id", "code", "students_considered", "trace", "warnings"],
+        "properties": {
+          "course_outcome_id": { "type": "string" },
+          "code": { "type": "string" },
+          "direct_value": { "type": "number" },
+          "indirect_value": { "type": "number" },
+          "final_value": { "type": "number" },
+          "level": { "type": "number" },
+          "direct_cie": { "type": "number" },
+          "direct_see": { "type": "number" },
+          "students_considered": { "type": "integer", "minimum": 0 },
+          "students_crossed": { "type": "integer", "minimum": 0 },
+          "wk_codes": { "type": "array", "items": { "type": "string" } },
+          "overridden": {
+            "type": "object",
+            "required": ["value", "reason", "author_id"],
+            "properties": {
+              "value": { "type": "number" },
+              "original": { "type": "number" },
+              "reason": { "type": "string" },
+              "author_id": { "type": "string" }
+            }
+          },
+          "trace": { "$ref": "#/$defs/coTrace" },
+          "warnings": { "type": "array", "items": { "$ref": "#/$defs/warning" } }
+        },
+        "description": "An absent value means unmeasured, never zero. A course outcome nobody could be measured on has not been failed — it has not been assessed, and reporting it as zero is how fabricated attainment enters a report."
+      }
+    },
+
+    "po_attainments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["outcome_id", "code", "kind", "method", "trace", "warnings"],
+        "properties": {
+          "outcome_id": { "type": "string" },
+          "code": { "type": "string" },
+          "kind": { "enum": ["po", "pso", "so"] },
+          "value": { "type": "number" },
+          "level": { "type": "number" },
+          "method": { "enum": ["weighted_average", "scaled", "max"] },
+          "trace": {
+            "type": "object",
+            "required": ["formula", "framework", "contributions"],
+            "properties": {
+              "formula": { "type": "string" },
+              "framework": { "type": "string" },
+              "inputs": { "type": "object" },
+              "contributions": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["course_outcome_id", "code", "correlation", "final_value"],
+                  "properties": {
+                    "course_outcome_id": { "type": "string" },
+                    "code": { "type": "string" },
+                    "correlation": { "type": "number" },
+                    "final_value": { "type": "number" },
+                    "weighted_value": { "type": "number" }
+                  }
+                }
+              },
+              "drilldown_query": { "type": "string" }
+            }
+          },
+          "warnings": { "type": "array", "items": { "$ref": "#/$defs/warning" } }
+        }
+      }
+    },
+
+    "warnings": { "type": "array", "items": { "$ref": "#/$defs/warning" } }
+  },
+
+  "$defs": {
+    "cohort": {
+      "type": "object",
+      "required": ["considered", "excluded", "exclusion_reasons"],
+      "properties": {
+        "considered": { "type": "integer", "minimum": 0 },
+        "excluded": { "type": "integer", "minimum": 0 },
+        "exclusion_reasons": {
+          "type": "object",
+          "additionalProperties": { "type": "integer", "minimum": 0 },
+          "description": "Named counts — absent, malpractice, dropped, audit, backlog. These decisions move the numbers more than any formula does, so they are reported rather than quietly applied."
+        }
+      }
+    },
+
+    "warning": {
+      "type": "object",
+      "required": ["code", "severity", "message"],
+      "properties": {
+        "code": { "type": "string" },
+        "severity": { "enum": ["info", "warn", "error"] },
+        "message": { "type": "string", "description": "Already resolved for display. Reports render it verbatim so every surface says the same thing about the same run." },
+        "subject": {
+          "type": "object",
+          "properties": {
+            "course_outcome_id": { "type": "string" },
+            "outcome_id": { "type": "string" },
+            "outcome_code": { "type": "string" },
+            "wk_indicator_id": { "type": "string" },
+            "assessment_id": { "type": "string" },
+            "question_id": { "type": "string" },
+            "enrollment_id": { "type": "string" }
+          }
+        },
+        "detail": { "type": "object" }
+      }
+    },
+
+    "coTrace": {
+      "type": "object",
+      "required": ["formula", "framework", "inputs", "cohort", "contributing_assessments", "students", "drilldown_query"],
+      "properties": {
+        "formula": { "type": "string" },
+        "framework": { "type": "string", "description": "code/version — a value is only readable against the framework that produced it." },
+        "inputs": { "type": "object", "description": "The thresholds actually applied: target, bands, weights, combination and end-semester mode." },
+        "cohort": { "$ref": "#/$defs/cohort" },
+        "crossed": { "type": "integer" },
+        "ratio": { "type": "number" },
+        "mean_pct": { "type": "number" },
+        "level": { "type": "number" },
+        "contributing_assessments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["assessment_id", "name", "kind", "weight", "questions"],
+            "properties": {
+              "assessment_id": { "type": "string" },
+              "name": { "type": "string" },
+              "kind": { "type": "string" },
+              "weight": { "type": "number" },
+              "questions": { "type": "array", "items": { "type": "string" } },
+              "dropped_by_best_n": { "type": "boolean" }
+            }
+          }
+        },
+        "students": {
+          "type": "array",
+          "description": "The layer above raw marks, ordered by roll number so the trace is stable across runs.",
+          "items": {
+            "type": "object",
+            "required": ["enrollment_id", "roll_no", "obtained", "maximum", "per_assessment"],
+            "properties": {
+              "enrollment_id": { "type": "string" },
+              "roll_no": { "type": "string" },
+              "pct": { "type": "number" },
+              "obtained": { "type": "number" },
+              "maximum": { "type": "number", "description": "This student's own denominator. Two students who answered different alternatives of a choice question are measured against different maxima." },
+              "crossed": { "type": "boolean" },
+              "excluded_reason": { "type": "string" },
+              "per_assessment": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["assessment_id", "obtained", "maximum", "questions"],
+                  "properties": {
+                    "assessment_id": { "type": "string" },
+                    "obtained": { "type": "number" },
+                    "maximum": { "type": "number" },
+                    "pct": { "type": "number" },
+                    "questions": {
+                      "type": "array",
+                      "description": "The bottom of the drill-down: the individual answers behind the number.",
+                      "items": {
+                        "type": "object",
+                        "required": ["question_id", "label", "score", "max_marks", "weight", "attempted"],
+                        "properties": {
+                          "question_id": { "type": "string" },
+                          "label": { "type": "string" },
+                          "score": { "type": "number" },
+                          "max_marks": { "type": "number" },
+                          "weight": { "type": "number" },
+                          "attempted": { "type": "boolean" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "drilldown_query": { "type": "string" }
+      }
+    }
+  }
+}

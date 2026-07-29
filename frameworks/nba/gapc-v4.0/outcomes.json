@@ -1,0 +1,147 @@
+{
+  "$schema": "../../../packages/schemas/framework-outcomes.schema.json",
+
+  "id": "nba/gapc-v4.0",
+  "body": "NBA",
+  "version": "gapc-v4.0",
+  "kind": "outcomes",
+  "label": "NBA UG Engineering — Graduate Attributes and Programme Criteria v4.0 (11 programme outcomes)",
+  "programme_scope": "ug-engineering",
+
+  "effective_from": "2025-01-01",
+  "effective_to": null,
+  "supersedes": "nba/gapc-v3.0",
+  "superseded_by": null,
+
+  "source_document": "NBA Graduate Attributes and Programme Criteria v4.0, aligned to the 2021 revision of the Washington Accord graduate attributes",
+  "source_url": "https://www.nbaind.org/",
+  "retrieved_on": "2026-07-29",
+  "verified_on": null,
+  "verification_note": "Transcribed from the 2021 Washington Accord graduate attribute revision on which GAPC v4.0 is based. The structure is right — eleven outcomes, with the old 'engineer and society' and 'environment and sustainability' merged and ethics renumbered — but the wording has NOT been checked against the published NBA GAPC v4.0 manual, and source_url points at the body's site rather than the document. Statement text is reproduced verbatim in a Self-Assessment Report, so a paraphrase here is a defect in someone's submission. A verifier must obtain the manual, confirm all eleven statements word for word, replace source_url, and set verified_on. Treat this file as a starting point for that check, not as authoritative.",
+
+  "outcome_count": 11,
+  "pso_count": 2,
+  "require_wk_mapping": true,
+  "knowledge_indicators_ref": "wk-indicators.json",
+
+  "notes": "Effective for Tier-I programmes from January 2025 and for Tier-II after the transition window closed in June 2025. A programme can legitimately span the cutover: terms before it compute under twelve outcomes and terms after under eleven, and the two must be reported as separate series rather than averaged into one.",
+
+  "changelog": [
+    {
+      "from": "nba/gapc-v3.0",
+      "summary": "Twelve programme outcomes reduced to eleven. The v3 'engineer and society' (PO6) and 'environment and sustainability' (PO7) merge into a single 'The Engineer and the World' outcome, with sustainability considerations additionally woven into problem analysis and design. Ethics survives, renumbered from PO8 to PO7 and broadened to include diversity and inclusion. Everything after ethics shifts down one position. A ninth knowledge indicator covering ethics and inclusive conduct is introduced.",
+      "affects": ["PO2", "PO3", "PO6", "PO7", "PO8", "PO9", "PO10", "PO11", "PO12"]
+    }
+  ],
+
+  "outcomes": [
+    {
+      "code": "PO1",
+      "kind": "po",
+      "sequence": 1,
+      "title": "Engineering knowledge",
+      "statement": "Apply knowledge of mathematics, natural science, computing, engineering fundamentals and an engineering specialisation as specified in WK1 to WK4 respectively to develop to the solution of complex engineering problems.",
+      "knowledge_indicators": ["WK1", "WK2", "WK3", "WK4"],
+      "migrated_from": "PO1"
+    },
+    {
+      "code": "PO2",
+      "kind": "po",
+      "sequence": 2,
+      "title": "Problem analysis",
+      "statement": "Identify, formulate, review research literature and analyse complex engineering problems reaching substantiated conclusions with consideration for sustainable development.",
+      "knowledge_indicators": ["WK1", "WK2", "WK3", "WK4"],
+      "migrated_from": "PO2",
+      "migration_note": "Sustainability is now stated within this outcome rather than standing alone as the retired PO7."
+    },
+    {
+      "code": "PO3",
+      "kind": "po",
+      "sequence": 3,
+      "title": "Design/development of solutions",
+      "statement": "Design creative solutions for complex engineering problems and design systems, components or processes to meet identified needs with consideration for the public health and safety, whole-life cost, net zero carbon, culture, society and environment as required.",
+      "knowledge_indicators": ["WK5"],
+      "migrated_from": "PO3",
+      "migration_note": "Absorbs part of the retired PO7 — whole-life cost and net zero carbon are stated here."
+    },
+    {
+      "code": "PO4",
+      "kind": "po",
+      "sequence": 4,
+      "title": "Conduct investigations of complex problems",
+      "statement": "Conduct investigations of complex engineering problems using research-based knowledge including design of experiments, analysis and interpretation of data, and synthesis of information to provide valid conclusions.",
+      "knowledge_indicators": ["WK8"],
+      "migrated_from": "PO4"
+    },
+    {
+      "code": "PO5",
+      "kind": "po",
+      "sequence": 5,
+      "title": "Engineering tool usage",
+      "statement": "Create, select and apply appropriate techniques, resources and modern engineering and IT tools, including prediction and modelling recognising their limitations to solve complex engineering problems.",
+      "knowledge_indicators": ["WK2", "WK6"],
+      "migrated_from": "PO5"
+    },
+    {
+      "code": "PO6",
+      "kind": "po",
+      "sequence": 6,
+      "title": "The engineer and the world",
+      "statement": "Analyse and evaluate societal and environmental aspects while solving complex engineering problems for its impact on sustainability with reference to economy, health, safety, legal framework, culture and environment.",
+      "knowledge_indicators": ["WK1", "WK5", "WK7"],
+      "migrated_from": "PO6+PO7",
+      "migration_note": "Two v3 outcomes collapse here — the source of the twelve-to-eleven reduction. A course outcome mapped only to the retired PO7 must NOT be auto-assigned to this outcome: whether it evidenced societal impact, design-stage sustainability, or analysis is a judgement about what the course actually assessed."
+    },
+    {
+      "code": "PO7",
+      "kind": "po",
+      "sequence": 7,
+      "title": "Ethics",
+      "statement": "Apply ethical principles and commit to professional ethics, human values, diversity and inclusion; adhere to national and international laws.",
+      "knowledge_indicators": ["WK9"],
+      "migrated_from": "PO8",
+      "migration_note": "The v3 PO8. Renumbered and broadened to include diversity and inclusion, so accepting the correspondence silently would assert something about a course that nobody checked."
+    },
+    {
+      "code": "PO8",
+      "kind": "po",
+      "sequence": 8,
+      "title": "Individual and collaborative team work",
+      "statement": "Function effectively as an individual, and as a member or leader in diverse and inclusive teams and in multidisciplinary settings.",
+      "knowledge_indicators": [],
+      "migrated_from": "PO9"
+    },
+    {
+      "code": "PO9",
+      "kind": "po",
+      "sequence": 9,
+      "title": "Communication",
+      "statement": "Communicate effectively and inclusively within the engineering community and society at large, such as being able to comprehend and write effective reports and design documentation, make effective presentations considering cultural, language, and learning differences.",
+      "knowledge_indicators": [],
+      "migrated_from": "PO10"
+    },
+    {
+      "code": "PO10",
+      "kind": "po",
+      "sequence": 10,
+      "title": "Project management and finance",
+      "statement": "Apply knowledge and understanding of engineering management principles and economic decision-making and apply these to one's own work, as a member and leader in a team, and to manage projects in multidisciplinary environments.",
+      "knowledge_indicators": [],
+      "migrated_from": "PO11"
+    },
+    {
+      "code": "PO11",
+      "kind": "po",
+      "sequence": 11,
+      "title": "Life-long learning",
+      "statement": "Recognise the need for, and have the preparation and ability for independent and life-long learning in the broadest context of technological change.",
+      "knowledge_indicators": ["WK8"],
+      "migrated_from": "PO12"
+    }
+  ],
+
+  "pso_template": [
+    { "code": "PSO1", "kind": "pso", "sequence": 12, "statement": "" },
+    { "code": "PSO2", "kind": "pso", "sequence": 13, "statement": "" }
+  ]
+}

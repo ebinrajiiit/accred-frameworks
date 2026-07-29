@@ -1,5 +1,11 @@
 # Accreditation Framework Registry
 
+<!-- verification-badge -->
+![verification: 3 UNVERIFIED](https://img.shields.io/badge/verification-3%20UNVERIFIED-critical)
+
+3 of 3 framework files have never been checked against an official manual: `nba/gapc-v3.0`, `nba/gapc-v4.0`, `nba/gapc-v4.0/wk-indicators`. They carry `verified_on: null` and a note saying what a verifier must confirm.
+<!-- /verification-badge -->
+
 Versioned, provenance-carrying definitions of accreditation frameworks — NBA, NAAC, ABET,
 NIRF — with JSON Schemas and a pure attainment engine that computes outcome attainment from
 them.
@@ -115,8 +121,26 @@ maintains this, on what cadence, and what happens if that lapses.
 
 ```bash
 npm install
-npm test        # validates every schema and every framework file in the registry
+npm test        # schemas, registry files, engine, golden fixtures
+npm run ci      # everything CI runs: typecheck, all four gates, tests
 ```
+
+### The gates
+
+The engine's contract — a pure function of its inputs, with no institution's rules baked in —
+is enforced mechanically rather than by review, because the pressure to break it always arrives
+gradually and with a good reason.
+
+| Gate | Fails on |
+|---|---|
+| `gate:imports` | The engine importing `fs`, a network client, Prisma, Next, or reaching outside its own package. `node:crypto` is the single permitted builtin, for hashing the input document. |
+| `gate:purity` | `Date.now()`, `Math.random()`, `process.env`, or a hardcoded threshold like `>= 0.65` in engine source. A run that reads the clock cannot be reproduced; a threshold in code is an institution's rule that has escaped the policy document. |
+| `gate:privacy` | Anything under `fixtures/` resembling a real roll number, email address, phone number or Aadhaar number. Fixtures are synthetic — invent the students. |
+| `gate:badge` | The README's verification badge disagreeing with the registry, so staleness cannot be hidden by forgetting to regenerate it. |
+
+A separate CI job runs the engine's tests with **no database present and no service containers
+declared**, because "computable on a laptop" is the claim that lets an institution audit a
+number independently, and it is worth asserting rather than assuming.
 
 Pin a version. Institutions and vendors should depend on an exact version of the data package
 (calendar-versioned, `2026.07.0`) and of the schemas (semver). Nothing should float: a

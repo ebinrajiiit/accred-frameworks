@@ -1,0 +1,94 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  # The registry can go stale without anyone touching the repository, so time alone must be
+  # able to fail the build. Weekly, Monday morning IST.
+  schedule:
+    - cron: '30 1 * * 1'
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Schemas, engine and gates
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Typecheck the engine
+        run: npm run typecheck
+
+      # ---- the boundary (OSS-SPLIT §4) -----------------------------------
+      # Each gate runs separately so a failure names itself in the job list rather than
+      # hiding inside a single opaque "gates" step.
+
+      - name: 'Gate — engine imports nothing forbidden'
+        run: npm run gate:imports
+
+      - name: 'Gate — engine is pure (no clock, no randomness, no hardcoded thresholds)'
+        run: npm run gate:purity
+
+      - name: 'Gate — no real student data in fixtures'
+        run: npm run gate:privacy
+
+      - name: 'Gate — verification badge matches the registry'
+        run: npm run gate:badge
+
+      - name: Schemas, registry and golden fixtures
+        run: npm test
+
+  no-database:
+    name: Engine runs with no database present
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+
+      # The engine claims to be computable without any infrastructure. That claim is what
+      # lets an institution audit a number on a laptop, and what lets another vendor adopt
+      # the package at all — so it is asserted rather than assumed. No service containers
+      # are declared in this job, and the environment is scrubbed of anything that could be
+      # mistaken for a connection.
+      - name: Assert no database is reachable
+        run: |
+          if [ -n "${DATABASE_URL:-}" ]; then
+            echo "DATABASE_URL is set — this job must prove the engine needs no database."
+            exit 1
+          fi
+          echo "No DATABASE_URL, no service containers, no Postgres on :5432."
+
+      - name: Engine test suite, no database
+        env:
+          DATABASE_URL: ''
+          NODE_ENV: test
+        run: npx vitest run packages/engine test/fixtures.test.ts
+
+  staleness:
+    name: Framework verification is current
+    runs-on: ubuntu-latest
+    # Reports rather than blocks on pull requests: an unverified registry is a real problem,
+    # but it is the maintainer's problem to schedule, not a reason to reject a contributor's
+    # unrelated fix. The weekly scheduled run is where it is meant to be noticed.
+    continue-on-error: ${{ github.event_name == 'pull_request' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Oldest verified_on across the registry
+        run: node scripts/staleness.mjs

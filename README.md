@@ -10,28 +10,34 @@ Versioned, provenance-carrying definitions of accreditation frameworks — NBA, 
 NIRF — with JSON Schemas and a pure attainment engine that computes outcome attainment from
 them.
 
-> **Status: the schemas are released; the framework data is UNVERIFIED.**
+> **Status: both packages are released; the framework data is UNVERIFIED.**
 >
-> [`@factsh/accred-schemas`](https://www.npmjs.com/package/@factsh/accred-schemas) is on npm.
-> It describes *shapes* and asserts nothing about any accreditation body's content, so nothing
-> in it is waiting on verification.
+> The *code* is published and the *data* is not yet checked. Those are separate claims and
+> this repository keeps them separate on purpose.
 >
-> The framework *files* are a different matter. `nba/gapc-v3.0`, `nba/gapc-v4.0`, its WK
+> [`@factsh/accred-schemas`](https://www.npmjs.com/package/@factsh/accred-schemas) describes
+> shapes and asserts nothing about any accreditation body's content.
+> [`@factsh/attainment-engine`](https://www.npmjs.com/package/@factsh/attainment-engine)
+> computes attainment, and its arithmetic is covered by hand-computed golden fixtures — the
+> two cases that decide whether a number is defensible, per-student choice-question
+> denominators and per-CO best-of-N, each have named tests.
+>
+> The framework *files* are the outstanding part. `nba/gapc-v3.0`, `nba/gapc-v4.0`, its WK
 > indicators and `naac/binary-2025` have not been checked clause by clause against an official
-> manual. Each carries `verified_on: null` and a note saying what a verifier must confirm, and
-> `npm run staleness` exits non-zero because of it, on purpose. **Do not rely on output derived
-> from them for a submission until it passes.**
+> manual. Each carries `verified_on: null` and a note saying what a verifier must confirm;
+> `npm run staleness` exits non-zero because of it, on purpose, and the badge above reads
+> UNVERIFIED for the same reason. **Do not rely on output derived from them for a submission
+> until that passes.** Both packages carry this warning in their own README, so it reaches
+> someone installing them rather than only someone browsing the repository.
 >
-> `@factsh/attainment-engine` is deliberately held back. Its arithmetic is covered by
-> hand-computed golden fixtures, but an npm version is permanent — deprecable, not removable —
-> and shipping one whose README has to lead with an UNVERIFIED warning is a claim that outlives
-> the fix. It goes out when the NBA files are verified.
+> Published at 0.x deliberately: the API may still move.
 
 ### Released
 
 - [x] `@factsh/accred-schemas@1.0.0` — 2026-07-29
+- [x] `@factsh/attainment-engine@0.1.0` — 2026-07-29, as a pre-release
 
-### Before the engine is released
+### Still outstanding
 
 - [ ] Verify `nba/gapc-v3.0`, `nba/gapc-v4.0` and its WK indicators against the official NBA
       manuals; replace each `source_url` with the document URL and set `verified_on`

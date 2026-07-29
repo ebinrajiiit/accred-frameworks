@@ -3,3 +3,6 @@ dist/
 coverage/
 *.tsbuildinfo
 .DS_Store
+
+# Packed artefacts — reproduce with `npm run pack`, never commit
+*.tgz

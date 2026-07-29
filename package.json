@@ -19,7 +19,8 @@
     "badge": "node scripts/badge.mjs",
     "typecheck": "tsc -p packages/engine/tsconfig.json --noEmit",
     "gates": "npm run gate:imports && npm run gate:purity && npm run gate:privacy && npm run gate:badge",
-    "ci": "npm run typecheck && npm run gates && npm test"
+    "ci": "npm run typecheck && npm run gates && npm test",
+    "pack": "npm run build -w packages/engine && cd packages/engine && npm pack --pack-destination ../.."
   },
   "devDependencies": {
     "ajv": "^8.17.1",

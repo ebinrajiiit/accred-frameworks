@@ -473,6 +473,27 @@
             "minimum": 0,
             "maximum": 100
           }
+        },
+        "order": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Grades best to worst, e.g. [\"S\",\"A+\",\"A\",\"B+\",\"B\",\"C+\",\"C\",\"D\",\"P\",\"F\"]. Required for an assessment naming target_grade. The order is the content: it says D beats P, which alphabetics will not.",
+          "examples": [
+            [
+              "S",
+              "A+",
+              "A",
+              "B+",
+              "B",
+              "C+",
+              "C",
+              "D",
+              "P",
+              "F"
+            ]
+          ]
         }
       }
     },

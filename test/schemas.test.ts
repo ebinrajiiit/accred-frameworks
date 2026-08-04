@@ -473,3 +473,36 @@ describe('published README', () => {
     }
   });
 });
+
+describe('grade targets', () => {
+  it('rejects an order that disagrees with the mapping', async () => {
+    // "At or above C" must mean the grades the institution considers at least as good as C.
+    // An order that runs the other way would admit exactly the wrong set, and every figure
+    // downstream would still look reasonable.
+    const { validatePolicy } = await import('../packages/engine/src/index.js');
+    const base = JSON.parse(
+      readFileSync(join(root, 'fixtures', 'policies', 'per-instrument-targets.json'), 'utf8'),
+    );
+    expect(validatePolicy(base)).toEqual([]);
+
+    const scrambled = {
+      ...base,
+      grade_scale: { ...base.grade_scale, order: ['F', 'P', 'D', 'C', 'C+', 'B', 'B+', 'A', 'A+', 'S'] },
+    };
+    expect(validatePolicy(scrambled).join(' ')).toMatch(/best-to-worst|higher percentage/i);
+  });
+
+  it('rejects an order naming a grade the mapping has no percentage for', () => {
+    const base = JSON.parse(
+      readFileSync(join(root, 'fixtures', 'policies', 'per-instrument-targets.json'), 'utf8'),
+    );
+    const withGhost = {
+      ...base,
+      grade_scale: { ...base.grade_scale, order: [...base.grade_scale.order, 'X'] },
+    };
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    return import('../packages/engine/src/index.js').then(({ validatePolicy }) => {
+      expect(validatePolicy(withGhost).join(' ')).toMatch(/no percentage for|could not be resolved/i);
+    });
+  });
+});

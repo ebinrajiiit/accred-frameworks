@@ -199,6 +199,19 @@ export interface PolicyGradeScale {
   enabled: boolean;
   /** Letter grade → representative marks percentage (band midpoint by convention, §4.6). */
   mapping: Record<string, number>;
+  /**
+   * Grades from best to worst, when the institution's rule is stated as a grade rather than
+   * as a percentage — "at or above C", not "at or above 65%".
+   *
+   * The two are not interchangeable in a report. Converting a grade rule to a percentage
+   * means choosing a number that happens to fall between D and C, and then printing "target
+   * 65%" where the institution's regulation says "grade C". An evaluator reading the first
+   * cannot check it against the second.
+   *
+   * Order is the whole content: `["S","A+","A","B+","B","C+","C","D","P","F"]` says D beats
+   * P, which no amount of alphabetics will tell you.
+   */
+  order?: string[];
 }
 
 export interface PolicyValidation {
@@ -356,6 +369,19 @@ export interface AssessmentInput {
   /** Share of the course, or share within its group when `group_id` is set. */
   weight_pct: number;
   group_id?: string | null;
+  /**
+   * Overrides `policy.direct.target_pct` for this instrument alone.
+   *
+   * Institutions set the bar per instrument: an internal test at 70% and a learning
+   * activity at 80% in the same course, because one is coursework with unlimited attempts
+   * and the other is not.
+   */
+  target_pct?: number;
+  /**
+   * The target as a grade, for an instrument reported only as grades. Requires
+   * `policy.grade_scale.order`. Takes precedence over `target_pct` where both are given.
+   */
+  target_grade?: string;
   /** Where the marks came from — drives the grade-derived stamp. */
   data_source?: 'question_wise' | 'totals' | 'grades' | 'co_wise';
   /**
@@ -578,6 +604,8 @@ export interface ComponentLevel {
   kind: 'cie' | 'see';
   /** The weight used for *this* outcome, which may differ from the component's scalar. */
   weight: number;
+  /** The bar this instrument was measured against — its own where it has one. */
+  target_pct: number;
   students: number;
   /** Undefined when nothing was measurable for this outcome in this instrument. */
   level?: number;

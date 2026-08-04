@@ -1,0 +1,263 @@
+{
+  "offering": {
+    "id": "offering:1",
+    "term_id": "term:1",
+    "section": "A",
+    "course": {
+      "id": "course:1",
+      "code": "CS201",
+      "title": "Synthetic Course",
+      "credits": 4,
+      "type": "theory"
+    }
+  },
+  "framework": {
+    "code": "nba-ug-eng",
+    "version": "gapc-v4.0",
+    "outcome_count": 11,
+    "supersedes": "gapc-v3.0"
+  },
+  "course_outcomes": [
+    {
+      "id": "co:CO1",
+      "code": "CO1",
+      "statement": "CO1 — synthetic course outcome.",
+      "sequence": 1
+    }
+  ],
+  "outcomes": [
+    {
+      "id": "outcome:PO1",
+      "code": "PO1",
+      "kind": "po",
+      "statement": "PO1 — synthetic programme outcome.",
+      "sequence": 1
+    }
+  ],
+  "articulation": [
+    {
+      "course_outcome_id": "co:CO1",
+      "outcome_id": "outcome:PO1",
+      "correlation": 3,
+      "justification": "CO1 is assessed through work requiring PO1-level capability."
+    }
+  ],
+  "assessments": [
+    {
+      "id": "INT",
+      "name": "Internal exam",
+      "kind": "cie",
+      "max_marks": 100,
+      "weight_pct": 20,
+      "target_pct": 70
+    },
+    {
+      "id": "ACT",
+      "name": "Learning activity",
+      "kind": "cie",
+      "max_marks": 100,
+      "weight_pct": 40,
+      "target_pct": 80
+    },
+    {
+      "id": "UNI",
+      "name": "University examination",
+      "kind": "see",
+      "max_marks": 100,
+      "weight_pct": 40,
+      "target_grade": "C"
+    }
+  ],
+  "questions": [
+    {
+      "id": "INT:Q1",
+      "assessment_id": "INT",
+      "label": "Q1",
+      "max_marks": 100,
+      "sequence": 1
+    },
+    {
+      "id": "ACT:LA1",
+      "assessment_id": "ACT",
+      "label": "LA1",
+      "max_marks": 100,
+      "sequence": 1
+    }
+  ],
+  "question_outcomes": [
+    {
+      "question_id": "INT:Q1",
+      "course_outcome_id": "co:CO1",
+      "weight": 1
+    },
+    {
+      "question_id": "ACT:LA1",
+      "course_outcome_id": "co:CO1",
+      "weight": 1
+    }
+  ],
+  "enrollments": [
+    {
+      "id": "en:S1",
+      "student_id": "st:S1",
+      "roll_no": "S1",
+      "display_name": "Student S1",
+      "status": "active"
+    },
+    {
+      "id": "en:S2",
+      "student_id": "st:S2",
+      "roll_no": "S2",
+      "display_name": "Student S2",
+      "status": "active"
+    },
+    {
+      "id": "en:S3",
+      "student_id": "st:S3",
+      "roll_no": "S3",
+      "display_name": "Student S3",
+      "status": "active"
+    },
+    {
+      "id": "en:S4",
+      "student_id": "st:S4",
+      "roll_no": "S4",
+      "display_name": "Student S4",
+      "status": "active"
+    },
+    {
+      "id": "en:S5",
+      "student_id": "st:S5",
+      "roll_no": "S5",
+      "display_name": "Student S5",
+      "status": "active"
+    }
+  ],
+  "marks": [
+    {
+      "enrollment_id": "en:S1",
+      "question_id": "INT:Q1",
+      "score": 80,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S1",
+      "question_id": "ACT:LA1",
+      "score": 95,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S2",
+      "question_id": "INT:Q1",
+      "score": 75,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S2",
+      "question_id": "ACT:LA1",
+      "score": 90,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S3",
+      "question_id": "INT:Q1",
+      "score": 72,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S3",
+      "question_id": "ACT:LA1",
+      "score": 85,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S4",
+      "question_id": "INT:Q1",
+      "score": 55,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S4",
+      "question_id": "ACT:LA1",
+      "score": 82,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S5",
+      "question_id": "INT:Q1",
+      "score": 40,
+      "attempted": true
+    },
+    {
+      "enrollment_id": "en:S5",
+      "question_id": "ACT:LA1",
+      "score": 60,
+      "attempted": true
+    }
+  ],
+  "assessment_totals": [
+    {
+      "enrollment_id": "en:S1",
+      "assessment_id": "UNI",
+      "grade": "B"
+    },
+    {
+      "enrollment_id": "en:S2",
+      "assessment_id": "UNI",
+      "grade": "C"
+    },
+    {
+      "enrollment_id": "en:S3",
+      "assessment_id": "UNI",
+      "grade": "C"
+    },
+    {
+      "enrollment_id": "en:S4",
+      "assessment_id": "UNI",
+      "grade": "P"
+    },
+    {
+      "enrollment_id": "en:S5",
+      "assessment_id": "UNI",
+      "grade": "F"
+    }
+  ],
+  "survey": {
+    "kind": "course_exit",
+    "scale_min": 1,
+    "scale_max": 5,
+    "invited": 5,
+    "responses": [
+      {
+        "course_outcome_id": "co:CO1",
+        "rating": 5,
+        "respondent_token": "r0"
+      },
+      {
+        "course_outcome_id": "co:CO1",
+        "rating": 5,
+        "respondent_token": "r1"
+      },
+      {
+        "course_outcome_id": "co:CO1",
+        "rating": 5,
+        "respondent_token": "r2"
+      },
+      {
+        "course_outcome_id": "co:CO1",
+        "rating": 4,
+        "respondent_token": "r3"
+      },
+      {
+        "course_outcome_id": "co:CO1",
+        "rating": 4,
+        "respondent_token": "r4"
+      },
+      {
+        "course_outcome_id": "co:CO1",
+        "rating": 3,
+        "respondent_token": "r5"
+      }
+    ]
+  }
+}

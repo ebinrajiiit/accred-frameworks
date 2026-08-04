@@ -74,6 +74,8 @@ function build(spec) {
       id: a.id, name: a.name ?? a.id, kind: a.kind ?? 'cie',
       max_marks: a.max ?? qs.reduce((s, q) => s + q.max, 0),
       weight_pct: a.weight, ...(a.group ? { group_id: a.group } : {}),
+      ...(a.targetPct !== undefined ? { target_pct: a.targetPct } : {}),
+      ...(a.targetGrade ? { target_grade: a.targetGrade } : {}),
       ...(a.coWeights
         ? {
             outcome_weights: Object.entries(a.coWeights).map(([c, w]) => ({
@@ -504,6 +506,70 @@ fixtures.push({
     component_levels: {
       CO1: { T: { level: 1, weight: 50 }, A: { level: 3, weight: 0 }, E: { level: 3, weight: 50 } },
       CO2: { T: { level: 1, weight: 30 }, A: { level: 3, weight: 30 }, E: { level: 3, weight: 40 } },
+    },
+  },
+});
+
+// ---- H ---------------------------------------------------------------------
+// Each instrument measured against its own bar, one of them stated as a grade.
+// Taken from a second college's workbook, which sets:
+//
+//   Internal exam       target 70% of marks     weight 20
+//   Learning activity   target 80% of marks     weight 40
+//   University exam     target grade C          weight 40
+//
+// The policy default target is 60%, matched by none of the three, so a run that ignores
+// the per-instrument targets produces different levels throughout rather than failing.
+//
+//   Internal   .80 .75 .72 .55 .40   3 of 5 reach 70%  -> .60 -> level 2   (w 20)
+//   Activity   .95 .90 .85 .82 .60   4 of 5 reach 80%  -> .80 -> level 3   (w 40)
+//   University B C C P F             3 of 5 at C+      -> .60 -> level 2   (w 40)
+//
+//   direct = (20*2 + 40*3 + 40*2) / 100 = 240/100 = 2.4
+//
+// Grades resolve through the same mapping in both directions: C is 63, so a student's
+// grade becomes a percentage and the target grade becomes the percentage to clear. B(73),
+// C(63), C(63) reach it; P(52) and F(20) do not.
+//
+// Indirect is a 1-5 course-exit survey read with a floor of 0 — this college's convention,
+// where the first sets the floor at 1. mean 4.3704 -> 4.3704/5*3 = 2.6222.
+//
+//   final = 0.8*2.4 + 0.2*2.6222 = 2.4444
+fixtures.push({
+  dir: 'h-per-instrument-targets',
+  title: 'H — a different target per instrument, one of them a grade',
+  description:
+    'Three instruments with three different bars: 70% of marks, 80% of marks, and grade C. The policy default is 60% and matches none of them, so ignoring the per-instrument targets changes every level without erroring. The grade target resolves through the same scale that converts a student grade to a percentage, so both sides of the comparison agree by construction.',
+  policy: 'per-instrument-targets',
+  spec: {
+    framework: NBA_V4, cos: ['CO1'], outcomes: ['PO1'], credits: 4,
+    articulation: { PO1: { CO1: 3 } },
+    assessments: [
+      { id: 'INT', name: 'Internal exam', weight: 20, targetPct: 70,
+        questions: [{ label: 'Q1', max: 100, co: 'CO1' }] },
+      { id: 'ACT', name: 'Learning activity', weight: 40, targetPct: 80,
+        questions: [{ label: 'LA1', max: 100, co: 'CO1' }] },
+      { id: 'UNI', name: 'University examination', kind: 'see', weight: 40, targetGrade: 'C', max: 100 },
+    ],
+    students: [
+      { roll: 'S1', marks: { 'INT:Q1': 80, 'ACT:LA1': 95 }, grades: { UNI: 'B' } },
+      { roll: 'S2', marks: { 'INT:Q1': 75, 'ACT:LA1': 90 }, grades: { UNI: 'C' } },
+      { roll: 'S3', marks: { 'INT:Q1': 72, 'ACT:LA1': 85 }, grades: { UNI: 'C' } },
+      { roll: 'S4', marks: { 'INT:Q1': 55, 'ACT:LA1': 82 }, grades: { UNI: 'P' } },
+      { roll: 'S5', marks: { 'INT:Q1': 40, 'ACT:LA1': 60 }, grades: { UNI: 'F' } },
+    ],
+    survey: { CO1: [5, 5, 5, 4, 4, 3] },
+  },
+  expected: {
+    combination: 'component_levels',
+    cohort: { considered: 5, excluded: 0 },
+    co: { CO1: { students_considered: 5, direct: 2.4 } },
+    component_levels: {
+      CO1: {
+        INT: { level: 2, weight: 20, target_pct: 70 },
+        ACT: { level: 3, weight: 40, target_pct: 80 },
+        UNI: { level: 2, weight: 40, target_pct: 63 },
+      },
     },
   },
 });

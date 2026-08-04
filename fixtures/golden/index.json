@@ -40,6 +40,11 @@
       "dir": "g-per-outcome-weightage",
       "title": "G — instrument weightage differs per outcome, levels averaged after banding",
       "policy": "component-levels"
+    },
+    {
+      "dir": "h-per-instrument-targets",
+      "title": "H — a different target per instrument, one of them a grade",
+      "policy": "per-instrument-targets"
     }
   ]
 }

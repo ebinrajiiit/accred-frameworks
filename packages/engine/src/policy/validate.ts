@@ -66,6 +66,30 @@ export function validatePolicy(policy: PolicyDocument): string[] {
           'must be defined — there is nothing to band with.',
       );
     }
+    if (policy.grade_scale?.order) {
+      const missing = policy.grade_scale.order.filter(
+        (g) => policy.grade_scale.mapping[g] === undefined,
+      );
+      if (missing.length > 0) {
+        issues.push(
+          `grade_scale.order lists ${missing.join(', ')}, which grade_scale.mapping has no ` +
+            `percentage for — a target naming one of those could not be resolved.`,
+        );
+      }
+      // The order must actually descend once mapped, or "at or above C" would admit grades
+      // the institution considers worse.
+      const pcts = policy.grade_scale.order.map((g) => policy.grade_scale.mapping[g] ?? -1);
+      for (let i = 1; i < pcts.length; i++) {
+        if (pcts[i]! > pcts[i - 1]!) {
+          issues.push(
+            `grade_scale.order runs best-to-worst, but ${policy.grade_scale.order[i]} maps to a ` +
+              `higher percentage than ${policy.grade_scale.order[i - 1]}. One of the two is wrong.`,
+          );
+          break;
+        }
+      }
+    }
+
     if (d.see_mode === 'threshold_proxy' && d.see_threshold_proxy_pct === undefined) {
       issues.push('direct.see_threshold_proxy_pct is required when see_mode is "threshold_proxy".');
     }

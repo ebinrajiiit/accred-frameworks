@@ -51,11 +51,20 @@ export function computeLevel(
   percentages: number[],
   direct: PolicyDirect,
   scale: PolicyScale,
+  /**
+   * Overrides `direct.target_pct` for this set alone.
+   *
+   * Institutions set the bar per instrument, not per policy: an internal test passed at 70%
+   * and a learning activity at 80% in the same course, because the activity is coursework
+   * with unlimited attempts and the test is not. Applying one figure to both understates
+   * one and overstates the other, and neither shows up as an error.
+   */
+  targetPct?: number,
 ): LevelComputation | undefined {
   const n = percentages.length;
   if (n === 0) return undefined;
 
-  const target = direct.target_pct / 100;
+  const target = (targetPct ?? direct.target_pct) / 100;
 
   switch (direct.method) {
     case 'target_ratio': {

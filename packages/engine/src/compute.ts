@@ -18,7 +18,7 @@ import {
 import { selectCohort, toCohortTrace } from './cohort.js';
 import { computeIndirect } from './indirect.js';
 import { clampToScale, computeLevel } from './level.js';
-import { componentWeight } from './co.js';
+import { componentTarget, componentWeight } from './co.js';
 import { assertFrameworkMatch, computeCoursePo, frameworkLabel } from './po.js';
 import { resolveSee } from './see.js';
 import { computeInputHash } from './hash.js';
@@ -324,12 +324,17 @@ function computeCourseOutcome(args: CoArgs): CoAttainment {
   const componentLevels: ComponentLevel[] = components
     .map((c) => {
       const list = componentPcts.get(c.key) ?? [];
-      const level = computeLevel(list, policy.direct, policy.scale);
+      // Each instrument is measured against its own bar where the policy gives it one.
+      const target = componentTarget(c, policy, (code, message) =>
+        warnings.push(code, message, { course_outcome_id: co.id }, { component: c.key }),
+      );
+      const level = computeLevel(list, policy.direct, policy.scale, target);
       return {
         component_key: c.key,
         name: c.name,
         kind: c.kind,
         weight: componentWeight(c, co.id),
+        target_pct: target ?? policy.direct.target_pct,
         students: list.length,
         ...(level ? { level: level.value } : {}),
       };

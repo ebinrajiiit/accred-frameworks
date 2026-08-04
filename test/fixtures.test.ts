@@ -119,7 +119,7 @@ describe('golden fixtures', () => {
           // figure is wrong, the averaging is at fault; if a level is wrong, the banding is.
           // Asserting both separates the two.
           for (const [code, byComponent] of Object.entries(
-            expected.component_levels as Record<string, Record<string, { level: number; weight: number }>>,
+            expected.component_levels as Record<string, Record<string, { level: number; weight: number; target_pct?: number }>>,
           )) {
             const co = result.co_attainments.find((c) => c.code === code);
             expect(co?.component_levels, `${code} has per-instrument levels`).toBeDefined();
@@ -129,6 +129,9 @@ describe('golden fixtures', () => {
               expect(got, `${code} component ${key}`).toBeDefined();
               expect(got!.level, `${code} ${key} level`).toBeCloseTo(want.level, 6);
               expect(got!.weight, `${code} ${key} weight`).toBeCloseTo(want.weight, 6);
+              if (want.target_pct !== undefined) {
+                expect(got!.target_pct, `${code} ${key} target`).toBeCloseTo(want.target_pct, 6);
+              }
             }
           }
         });
@@ -137,7 +140,7 @@ describe('golden fixtures', () => {
           // The discriminating case: an instrument every student aced, weighted 0 here.
           // Ignoring per-outcome weights would pull the figure up and nothing would error.
           for (const [code, byComponent] of Object.entries(
-            expected.component_levels as Record<string, Record<string, { level: number; weight: number }>>,
+            expected.component_levels as Record<string, Record<string, { level: number; weight: number; target_pct?: number }>>,
           )) {
             const zeroed = Object.entries(byComponent).filter(([, w]) => w.weight === 0);
             if (zeroed.length === 0) continue;

@@ -15,6 +15,8 @@ export type WarningCode =
   | 'CO_UNDER_ASSESSED'
   /** Marks exist for a CO but every instrument is weighted 0 for it, so nothing combines. */
   | 'NO_WEIGHTED_COMPONENT'
+  /** An instrument names a grade target the policy's grade scale cannot resolve. */
+  | 'GRADE_TARGET_UNRESOLVED'
   /** A CO maps to no program outcome at all, so nothing it measures can reach a PO. (§10.3) */
   | 'CO_UNMAPPED'
   /** A CO maps to more POs than policy treats as plausible. (§10.3) */
@@ -93,6 +95,7 @@ const SEVERITY: Record<WarningCode, WarningSeverity> = {
   CO_NOT_ASSESSED: 'error',
   CO_UNDER_ASSESSED: 'warn',
   NO_WEIGHTED_COMPONENT: 'error',
+  GRADE_TARGET_UNRESOLVED: 'warn',
   CO_UNMAPPED: 'error',
   CO_OVER_MAPPED: 'warn',
   ARTICULATION_JUSTIFICATION_MISSING: 'info',

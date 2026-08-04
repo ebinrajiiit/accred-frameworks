@@ -356,6 +356,16 @@
                 }
               }
             }
+          },
+          "target_pct": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "Overrides policy.direct.target_pct for this instrument. Institutions set the bar per instrument — an internal test at 70% and a learning activity at 80% in the same course, because one is coursework with unlimited attempts and the other is not."
+          },
+          "target_grade": {
+            "type": "string",
+            "description": "The target as a grade, for an instrument reported only as grades. Requires policy.grade_scale.order. Takes precedence over target_pct. Stated as a grade rather than converted to a percentage because the institution's regulation says 'grade C', and a report reading 'target 65%' is a claim an evaluator cannot check against it."
           }
         }
       }

@@ -8,4 +8,4 @@
  * Kept in sync with package.json by a test in `version.test.ts` — this is a literal
  * rather than an import because the engine must not read files at runtime.
  */
-export const ENGINE_VERSION = '0.3.0';
+export const ENGINE_VERSION = '0.4.0';

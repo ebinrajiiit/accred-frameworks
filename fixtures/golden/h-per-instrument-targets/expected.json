@@ -1,0 +1,34 @@
+{
+  "title": "H — a different target per instrument, one of them a grade",
+  "description": "Three instruments with three different bars: 70% of marks, 80% of marks, and grade C. The policy default is 60% and matches none of them, so ignoring the per-instrument targets changes every level without erroring. The grade target resolves through the same scale that converts a student grade to a percentage, so both sides of the comparison agree by construction.",
+  "combination": "component_levels",
+  "cohort": {
+    "considered": 5,
+    "excluded": 0
+  },
+  "co": {
+    "CO1": {
+      "students_considered": 5,
+      "direct": 2.4
+    }
+  },
+  "component_levels": {
+    "CO1": {
+      "INT": {
+        "level": 2,
+        "weight": 20,
+        "target_pct": 70
+      },
+      "ACT": {
+        "level": 3,
+        "weight": 40,
+        "target_pct": 80
+      },
+      "UNI": {
+        "level": 2,
+        "weight": 40,
+        "target_pct": 63
+      }
+    }
+  }
+}

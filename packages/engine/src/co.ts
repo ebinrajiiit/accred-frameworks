@@ -60,6 +60,50 @@ export interface Component {
 }
 
 /**
+ * The target this component is measured against, as a fraction of its maximum.
+ *
+ * A grade target is resolved through `grade_scale.order` and `mapping`: the position of the
+ * named grade in the order gives which grades count as reaching it, and the mapping gives
+ * the percentage that boundary sits at. Where a grade target cannot be resolved the policy
+ * default is used and a warning is raised, because silently applying the wrong bar is worse
+ * than a report that says it could not.
+ */
+export function componentTarget(
+  component: Component,
+  policy: PolicyDocument,
+  warn?: (code: 'GRADE_TARGET_UNRESOLVED', message: string) => void,
+): number | undefined {
+  // Members of a group should not disagree; the first that states a target wins, which is
+  // also what a group with one rule means.
+  const withGrade = component.members.find((m) => m.target_grade);
+  if (withGrade?.target_grade) {
+    const order = policy.grade_scale.order;
+    const grade = withGrade.target_grade;
+    if (!order || !order.includes(grade)) {
+      warn?.(
+        'GRADE_TARGET_UNRESOLVED',
+        `"${component.name}" targets grade ${grade}, but policy.grade_scale.order ` +
+          `${order ? 'does not list it' : 'is not set'}. Falling back to the policy target.`,
+      );
+      return undefined;
+    }
+    const pct = policy.grade_scale.mapping[grade];
+    if (pct === undefined) {
+      warn?.(
+        'GRADE_TARGET_UNRESOLVED',
+        `"${component.name}" targets grade ${grade}, which is not in policy.grade_scale.mapping, ` +
+          `so the percentage it corresponds to is unknown. Falling back to the policy target.`,
+      );
+      return undefined;
+    }
+    return pct;
+  }
+
+  const withPct = component.members.find((m) => m.target_pct !== undefined);
+  return withPct?.target_pct;
+}
+
+/**
  * What this component is worth for one outcome.
  *
  * The scalar weight is the fallback, so a policy written before per-outcome weights existed
